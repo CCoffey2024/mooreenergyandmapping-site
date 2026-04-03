@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bear Creek Trail System Map — Moore Energy & Mapping</title>
+<meta name="description" content="A modernized trail map, GeoPackage dataset, and KMZ superoverlay for the Bear Creek Trail System in Robbins, Moore County, NC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-deep:  #1C3D2E;
+    --green-mid:   #3D6B4F;
+    --gold:        #B8892A;
+    --bronze:      #8A6518;
+    --cream:       #F4ECD7;
+    --wheat:       #D4BF90;
+    --stone:       #6B5F4A;
+    --bark:        #231A0E;
+    --white:       #FDFAF4;
+    --serif:       'Playfair Display', Georgia, serif;
+    --sans:        'Source Sans 3', system-ui, sans-serif;
+    --mono:        'Space Mono', 'Courier New', monospace;
+  }
+
+  body { font-family: var(--sans); color: var(--bark); background: var(--white); line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--green-deep); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--bronze); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; height: 64px; gap: 2rem; }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+  .nav-wordmark-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: #F4ECD7; }
+  .nav-wordmark-sub { font-family: var(--serif); font-size: 0.75rem; color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; margin-left: auto; align-items: center; }
+  .nav-links a { font-size: 0.85rem; color: #D4BF90; text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: #F4ECD7; }
+  .nav-cta { background: var(--gold) !important; color: var(--green-deep) !important; padding: 0.4rem 1rem !important; border-radius: 4px; font-weight: 600 !important; }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--cream); border-bottom: 1px solid var(--wheat); padding: 0.6rem 2rem; }
+  .breadcrumb-inner { max-width: 1100px; margin: 0 auto; }
+  .breadcrumb p { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--stone); }
+  .breadcrumb a { color: var(--stone); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { color: var(--bronze); margin: 0 0.4rem; }
+
+  /* PROJECT HEADER */
+  .project-header {
+    background: var(--green-deep);
+    padding: 4rem 2rem 3.5rem;
+    position: relative;
+  }
+  .project-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .header-inner { max-width: 1100px; margin: 0 auto; }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+  .project-header h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: #F4ECD7;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .project-header p {
+    font-size: 1rem;
+    color: #C4B88A;
+    max-width: 640px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+  .header-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .meta-item { display: flex; flex-direction: column; }
+  .meta-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #6B8A78; }
+  .meta-value { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); margin-top: 2px; }
+
+  /* MAIN CONTENT */
+  .content-wrap { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+  /* MAP SHOWCASE */
+  .map-showcase { padding: 3rem 0; }
+  .map-frame {
+    border: 2px solid var(--wheat);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #0E1A12;
+    margin-bottom: 0.75rem;
+  }
+  .map-frame img { width: 100%; display: block; }
+  .map-caption {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--stone);
+    letter-spacing: 0.08em;
+    padding: 0.6rem 0.75rem;
+    background: var(--bark);
+    border-radius: 0 0 4px 4px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  @media (max-width: 640px) { .before-after { grid-template-columns: 1fr; } }
+  .ba-card { border-radius: 6px; overflow: hidden; border: 1px solid var(--wheat); }
+  .ba-label {
+    background: var(--green-deep);
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.5rem 0.875rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .ba-card img { width: 100%; display: block; }
+
+  /* SECTIONS */
+  .section { padding: 2.5rem 0; border-top: 1px solid var(--wheat); }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.625rem;
+  }
+  .section h2 {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--green-deep);
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+  .section p { font-size: 0.95rem; color: var(--stone); line-height: 1.8; margin-bottom: 0.875rem; max-width: 760px; }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    margin: 1.75rem 0;
+  }
+  .stat-card {
+    background: var(--cream);
+    border: 1px solid var(--wheat);
+    border-radius: 6px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border-top: 2px solid var(--green-mid);
+  }
+  .stat-value { display: block; font-family: var(--mono); font-size: 1.5rem; font-weight: 700; color: var(--green-deep); line-height: 1.1; }
+  .stat-label { font-size: 0.72rem; color: var(--stone); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--sans); margin-top: 4px; display: block; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--wheat); border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  thead { background: var(--green-deep); }
+  thead th { color: #D4BF90; font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.75rem 1rem; text-align: left; font-weight: 400; }
+  tbody tr:nth-child(even) { background: var(--cream); }
+  tbody tr:hover { background: #EDE4CA; }
+  tbody td { padding: 0.625rem 1rem; color: var(--bark); border-bottom: 1px solid var(--wheat); }
+  .td-trail { font-weight: 600; color: var(--green-deep); }
+  .td-mono { font-family: var(--mono); font-size: 0.78rem; color: var(--stone); }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-family: var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .badge-hike { background: #E8F2E8; color: #1C3D2E; }
+  .badge-mtb  { background: #FFF3DC; color: #8A6518; }
+  .badge-multi { background: #EAF0FF; color: #2A4A8A; }
+
+  /* DISC GOLF */
+  .dg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .dg-hole {
+    background: var(--cream);
+    border: 1px solid var(--wheat);
+    border-radius: 6px;
+    padding: 0.875rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+  .dg-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green-deep);
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .dg-info { display: flex; flex-direction: column; min-width: 0; }
+  .dg-dist { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; color: var(--green-deep); }
+  .dg-meta { font-size: 0.72rem; color: var(--stone); }
+
+  /* DOWNLOADS */
+  .download-section { background: var(--green-deep); border-radius: 8px; padding: 2rem; margin: 2rem 0; }
+  .download-section h3 { font-family: var(--serif); color: #F4ECD7; font-size: 1.3rem; margin-bottom: 0.5rem; }
+  .download-section p { color: #C4B88A; font-size: 0.88rem; margin-bottom: 1.5rem; max-width: 100%; }
+  .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .dl-card {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid #2A5A3A;
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+  .dl-card-title { font-family: var(--sans); font-size: 0.92rem; font-weight: 600; color: #F4ECD7; margin-bottom: 0.3rem; }
+  .dl-card-desc { font-size: 0.8rem; color: #8AAA92; line-height: 1.5; margin-bottom: 1rem; }
+  .dl-card-meta { font-family: var(--mono); font-size: 0.62rem; color: #6B8A78; letter-spacing: 0.06em; margin-bottom: 0.875rem; }
+  .dl-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--green-deep);
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: var(--sans);
+    transition: background 0.15s;
+  }
+  .dl-btn:hover { background: var(--wheat); }
+  .dl-btn-outline {
+    display: inline-block;
+    border: 1px solid var(--bronze);
+    color: var(--gold);
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    text-decoration: none;
+    font-family: var(--sans);
+    transition: background 0.15s;
+  }
+  .dl-btn-outline:hover { background: var(--gold); color: var(--green-deep); }
+
+  /* TECH SPECS */
+  .spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 1.5rem 0; }
+  @media (max-width: 520px) { .spec-grid { grid-template-columns: 1fr; } }
+  .spec-row { display: flex; padding: 0.5rem 0; border-bottom: 1px solid var(--wheat); gap: 1rem; }
+  .spec-key { font-family: var(--mono); font-size: 0.68rem; color: var(--stone); letter-spacing: 0.08em; width: 120px; flex-shrink: 0; }
+  .spec-val { font-family: var(--mono); font-size: 0.72rem; color: var(--green-deep); }
+
+  /* FOOTER */
+  footer { background: var(--bark); padding: 2rem 2rem 1.5rem; color: #4A3F32; margin-top: 4rem; }
+  .footer-bottom { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-bottom p, .footer-bottom a { font-family: var(--mono); font-size: 0.65rem; color: #3A3028; letter-spacing: 0.08em; text-decoration: none; }
+
+  @media (max-width: 640px) { .nav-links { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo">
+      <svg viewBox="0 0 80 80" width="36" height="36" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#F4ECD7"/>
+      </svg>
+      <div>
+        <div class="nav-wordmark-main">Moore Energy &amp; Mapping</div>
+        <div class="nav-wordmark-sub">Moore County, NC</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../projects/">Mapping Projects</a></li>
+      <li><a href="../energy.html">Energy Resources</a></li>
+      <li><a href="../open-data.html">Open Data</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../get-involved.html" class="nav-cta">Get Involved</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <p>
+      <a href="../index.html">Home</a>
+      <span>/</span>
+      <a href="../projects/">Mapping Projects</a>
+      <span>/</span>
+      Bear Creek Trail System
+    </p>
+  </div>
+</div>
+
+<!-- PROJECT HEADER -->
+<div class="project-header">
+  <div class="header-inner">
+    <span class="project-tag">Community Mapping Project · 2026</span>
+    <h1>Bear Creek Trail System Map</h1>
+    <p>A modernized cartographic product and attributed GIS dataset for Robbins' multi-use trail system — built from USGS terrain data, NC OneMap imagery, and OpenStreetMap geometry in NC State Plane NAD83.</p>
+    <div class="header-meta">
+      <div class="meta-item">
+        <span class="meta-label">Location</span>
+        <span class="meta-value">Robbins, NC · Moore County</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Coordinates</span>
+        <span class="meta-value">35.4334°N  79.6050°W</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">CRS</span>
+        <span class="meta-value">EPSG:32119 NC State Plane NAD83</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Published</span>
+        <span class="meta-value">March 2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrap">
+
+  <!-- MAP SHOWCASE -->
+  <div class="map-showcase">
+    <div class="map-frame">
+      <img src="../assets/bear-creek-trail-map.jpg"
+           alt="Bear Creek Trail System map — Robbins, NC. Shows 7 trail routes, 18-hole disc golf course, Bear Creek and Cabin Creek waterways, hillshade terrain, parking areas, and restrooms. Produced March 2026 in EPSG:32119."
+           loading="eager">
+      <div class="map-caption">
+        <span>BEAR CREEK TRAIL SYSTEM · TOWN OF ROBBINS · MOORE COUNTY, NC</span>
+        <span>DATA: NC ONEMAP · USGS NATIONAL MAP · CARTO · OSM · MARCH 2026</span>
+      </div>
+    </div>
+
+    <div class="before-after">
+      <div class="ba-card">
+        <div class="ba-label">
+          <span>Before — 2010 trailhead kiosk map</span>
+          <span>local engineering firm</span>
+        </div>
+        <img src="../assets/bear-creek-trail-map-2010.jpg" alt="Original 2010 trailhead kiosk map — reference only, no machine-readable data or GIS dataset">
+      </div>
+      <div class="ba-card">
+        <div class="ba-label" style="background:#1C3D2E;">
+          <span>After — 2026 Moore E&amp;M production map</span>
+          <span>EPSG:32119 · 300 DPI</span>
+        </div>
+        <img src="../assets/bear-creek-trail-map-detail.jpg" alt="2026 production map detail showing hillshade terrain, disc golf holes, and trail symbology">
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-value">7</span>
+      <span class="stat-label">Named trail routes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">10.8</span>
+      <span class="stat-label">Miles — Buzzard Rock Loop</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">18</span>
+      <span class="stat-label">Disc golf holes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">Par 56</span>
+      <span class="stat-label">Course par total</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">3</span>
+      <span class="stat-label">MTB-permitted routes</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">329</span>
+      <span class="stat-label">KMZ map tiles (z13–17)</span>
+    </div>
+  </div>
+
+  <!-- PROJECT DESCRIPTION -->
+  <div class="section">
+    <span class="section-label">About this project</span>
+    <h2>Replacing a 16-year-old map with a production-grade GIS product</h2>
+    <p>The Bear Creek Trail System in Robbins has been operating without an updated cartographic product since the original trailhead kiosk map was produced by a local engineering firm in May 2010. That map served trailhead visitors well but lacked machine-readable data and did not reflect current trail use designations including mountain biking on designated routes.</p>
+    <p>Moore Energy &amp; Mapping produced a modernized trail map and supporting GIS dataset using professional open-source GIS workflows: trail geometry sourced from OpenStreetMap via the Overpass API and supplemented with on-screen digitizing; hillshade and elevation data from the USGS National Map; and base imagery from NC OneMap and CARTO. All data is authored in EPSG:32119 (NC State Plane NAD83) with trail lengths calculated in miles.</p>
+    <p>The disc golf course — an 18-hole layout arranged around the central reservoir — is documented with individual basket locations, hole distances, tee type designations, and par values sourced from on-site measurement and Parks and Recreation records.</p>
+  </div>
+
+  <!-- TRAIL DATA TABLE -->
+  <div class="section">
+    <span class="section-label">Trail system</span>
+    <h2>Trail routes and permitted uses</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Trail name</th>
+            <th>Map color</th>
+            <th>Permitted use</th>
+            <th>Est. distance</th>
+            <th>Character</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-trail">Bear Creek Trail</td>
+            <td><span style="color:#D05080;font-family:var(--mono);font-size:.78rem;">■</span> Magenta</td>
+            <td><span class="badge badge-hike">Hiking</span></td>
+            <td class="td-mono">~3.75 mi</td>
+            <td>Main spine trail along Bear Creek corridor</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Buzzard Rock Loop</td>
+            <td><span style="color:#C8A020;font-family:var(--mono);font-size:.78rem;">■</span> Yellow</td>
+            <td><span class="badge badge-hike">Hiking</span></td>
+            <td class="td-mono">10.8 mi</td>
+            <td>Longest loop — western ridgeline, significant elevation change</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Running Cedar Trail</td>
+            <td><span style="color:#4488CC;font-family:var(--mono);font-size:.78rem;">■</span> Blue</td>
+            <td><span class="badge badge-hike">Hiking</span></td>
+            <td class="td-mono">~1.4 mi</td>
+            <td>Northwest connector through upland pine/cedar</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Reservoir Loop</td>
+            <td><span style="color:#20AA80;font-family:var(--mono);font-size:.78rem;">■</span> Teal</td>
+            <td><span class="badge badge-mtb">Hiking + MTB</span></td>
+            <td class="td-mono">~1.5 mi</td>
+            <td>Circumnavigates the central reservoir and disc golf course</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Elise School Connector</td>
+            <td><span style="color:#404090;font-family:var(--mono);font-size:.78rem;">■</span> Dark blue</td>
+            <td><span class="badge badge-mtb">Hiking + MTB</span></td>
+            <td class="td-mono">~0.5 mi</td>
+            <td>Eastern connector from Elise School parking area</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Cabin Creek Loop</td>
+            <td><span style="color:#5588CC;font-family:var(--mono);font-size:.78rem;">■</span> Blue (S)</td>
+            <td><span class="badge badge-mtb">Hiking + MTB</span></td>
+            <td class="td-mono">~2.5 mi</td>
+            <td>Southern drainage corridor along Cabin Creek</td>
+          </tr>
+          <tr>
+            <td class="td-trail">Trailhead Access Path</td>
+            <td><span style="color:#228844;font-family:var(--mono);font-size:.78rem;">■</span> Green</td>
+            <td><span class="badge badge-multi">All uses</span></td>
+            <td class="td-mono">~0.2 mi</td>
+            <td>Paved/hardened connection from main parking area</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-family:var(--mono);font-size:0.65rem;color:var(--stone);letter-spacing:0.06em;">
+      DISTANCES ARE APPROXIMATE — CALCULATED IN EPSG:32119 FROM OSM GEOMETRY WITH ON-SCREEN DIGITIZING SUPPLEMENT.
+      FIELD VERIFICATION RECOMMENDED FOR PUBLISHED MILEAGE.
+    </p>
+  </div>
+
+  <!-- DISC GOLF -->
+  <div class="section">
+    <span class="section-label">Bear Creek Disc Golf Course</span>
+    <h2>18-hole course details</h2>
+    <p>The Bear Creek Disc Golf Course occupies the reservoir peninsula and surrounding grounds, with 18 holes arranged at varying orientations and distances. Two holes (12 and 16A) play as Par 4. Course par total: <strong>56</strong>. Tee designations: S = Short, L = Long, X = Extended.</p>
+
+    <div class="dg-grid">
+      <div class="dg-hole"><div class="dg-number">1</div><div class="dg-info"><span class="dg-dist">267 ft</span><span class="dg-meta">Short tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">2</div><div class="dg-info"><span class="dg-dist">225 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">3</div><div class="dg-info"><span class="dg-dist">255 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">4</div><div class="dg-info"><span class="dg-dist">188 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">5</div><div class="dg-info"><span class="dg-dist">305 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">6</div><div class="dg-info"><span class="dg-dist">194 ft</span><span class="dg-meta">Short tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">7</div><div class="dg-info"><span class="dg-dist">220 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">8</div><div class="dg-info"><span class="dg-dist">300 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">9</div><div class="dg-info"><span class="dg-dist">165 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">10</div><div class="dg-info"><span class="dg-dist">175 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">11</div><div class="dg-info"><span class="dg-dist">188 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">12</div><div class="dg-info"><span class="dg-dist">480 ft</span><span class="dg-meta">Long tee · <strong>Par 4</strong></span></div></div>
+      <div class="dg-hole"><div class="dg-number">13</div><div class="dg-info"><span class="dg-dist">180 ft</span><span class="dg-meta">Extended tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">14</div><div class="dg-info"><span class="dg-dist">250 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">15</div><div class="dg-info"><span class="dg-dist">290 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">16A</div><div class="dg-info"><span class="dg-dist">540 ft</span><span class="dg-meta">Long tee · <strong>Par 4</strong></span></div></div>
+      <div class="dg-hole"><div class="dg-number">17A</div><div class="dg-info"><span class="dg-dist">255 ft</span><span class="dg-meta">Long tee · Par 3</span></div></div>
+      <div class="dg-hole"><div class="dg-number">18A</div><div class="dg-info"><span class="dg-dist">220 ft</span><span class="dg-meta">Short tee · Par 3</span></div></div>
+    </div>
+  </div>
+
+  <!-- DOWNLOADS -->
+  <div class="section">
+    <span class="section-label">Downloads &amp; data access</span>
+    <h2>Map products and GIS data</h2>
+    <p>All Bear Creek Trail System products are publicly accessible. The KMZ superoverlay is optimized for Google Earth Pro and will drape the full map across 329 terrain-aligned tiles at zoom level 17 — the most detailed available for this area.</p>
+
+    <div class="download-section">
+      <h3>Bear Creek Trail System — Product Set</h3>
+      <p>Print-ready map, terrain-draped KMZ, and attributed vector GIS data in NC State Plane NAD83.</p>
+      <div class="dl-grid">
+        <div class="dl-card">
+          <div class="dl-card-title">Print-Ready Trail Map</div>
+          <div class="dl-card-desc">24"×36" cartographic layout with legend, north arrow, scale bar, and full trail symbology. Suitable for print production or digital distribution.</div>
+          <div class="dl-card-meta">PDF · 300 DPI · EPSG:32119 · March 2026</div>
+          <a href="../downloads/Bear_Creek_Trail_Map.pdf" class="dl-btn" download>Download PDF</a>
+        </div>
+        <div class="dl-card">
+          <div class="dl-card-title">KMZ Superoverlay</div>
+          <div class="dl-card-desc">Multi-zoom tile pyramid (zoom levels 13–17) for Google Earth. The map drapes directly on 3D terrain — open in Google Earth Pro for the full elevation-draped view.</div>
+          <div class="dl-card-meta">KMZ · 329 tiles · Zoom 13–17 · 5.4 MB compressed</div>
+          <a href="../downloads/Bear_Creek_Trail_Map_super_overlay.kmz" class="dl-btn" download>Download KMZ</a>
+        </div>
+        <div class="dl-card">
+          <div class="dl-card-title">GeoPackage — Vector Data</div>
+          <div class="dl-card-desc">Four attributed vector layers: trails (with name, surface, permitted use, length), amenity points, water body polygon, and system boundary. Compatible with QGIS, ArcGIS, and any OGR-capable tool.</div>
+          <div class="dl-card-meta">GPKG · EPSG:32119 · 4 layers · Open license</div>
+          <a href="../downloads/Bear_Creek_Trails.gpkg" class="dl-btn" download>Download GPKG</a>
+        </div>
+        <div class="dl-card">
+          <div class="dl-card-title">Trail Schematic (HTML)</div>
+          <div class="dl-card-desc">Interactive SVG reference schematic — color-coded trail routes, disc golf holes, waterways, and MTB designations. No installation required, opens in any browser.</div>
+          <div class="dl-card-meta">HTML · Standalone · Offline-capable</div>
+          <a href="../downloads/bear_creek_trail_schematic.html" class="dl-btn-outline">Open Schematic</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TECH SPECS -->
+  <div class="section">
+    <span class="section-label">Technical specifications</span>
+    <h2>Data sources and methods</h2>
+
+    <div class="spec-grid">
+      <div>
+        <div class="spec-row"><span class="spec-key">CRS</span><span class="spec-val">EPSG:32119 — NC State Plane NAD83</span></div>
+        <div class="spec-row"><span class="spec-key">Trail geometry</span><span class="spec-val">OSM Overpass API + on-screen digitizing</span></div>
+        <div class="spec-row"><span class="spec-key">Imagery</span><span class="spec-val">NC OneMap orthophoto + CARTO basemap</span></div>
+        <div class="spec-row"><span class="spec-key">Terrain / DEM</span><span class="spec-val">USGS National Map — 1m QL1 where available</span></div>
+        <div class="spec-row"><span class="spec-key">Hillshade</span><span class="spec-val">USGS 1m DEM — multi-directional rendering</span></div>
+      </div>
+      <div>
+        <div class="spec-row"><span class="spec-key">Map output</span><span class="spec-val">24"×36" PDF · min 300 DPI</span></div>
+        <div class="spec-row"><span class="spec-key">KMZ zoom levels</span><span class="spec-val">13 (regional) through 17 (detail)</span></div>
+        <div class="spec-row"><span class="spec-key">KMZ tile count</span><span class="spec-val">329 tiles (PNG + JPG mixed)</span></div>
+        <div class="spec-row"><span class="spec-key">GeoPackage layers</span><span class="spec-val">trails, amenities, water_body, sys_boundary</span></div>
+        <div class="spec-row"><span class="spec-key">Trail attributes</span><span class="spec-val">name, surface, permitted_use, length_mi</span></div>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;">Data credits: OpenStreetMap contributors (ODbL), NC OneMap, USGS National Map, CARTO. Trail distances calculated in EPSG:32119 from digitized geometry. Ground-truth verification of select features recommended before use in signage or official publications.</p>
+  </div>
+
+</div><!-- /content-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <p>© 2025 Moore County Mapping and Energy Alliance · d/b/a Moore Energy &amp; Mapping · SOSID 2930299 · Robbins, NC</p>
+    <a href="https://mooreenergymaps.org">mooreenergymaps.org</a>
+  </div>
+  <div style="max-width:1200px;margin:.5rem auto 0;padding:0 2rem;"><a href="../open-data.html#privacy" style="font-family:var(--mono);font-size:.62rem;color:#3A3028;text-decoration:none;letter-spacing:.06em;">Data Ethics &amp; Privacy</a></div>
+</footer>
+
+</body>
+</html>

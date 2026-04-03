@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Data — Moore Energy & Mapping</title>
+<meta name="description" content="Openly licensed geospatial datasets for Moore County and the NC Sandhills. GeoPackage, KMZ, GeoTIFF, and PDF map products — no account required.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep: #1C3D2E; --green-mid: #3D6B4F; --gold: #B8892A; --bronze: #8A6518;
+    --cream: #F4ECD7; --wheat: #D4BF90; --stone: #6B5F4A; --bark: #231A0E; --white: #FDFAF4;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+    --mono: 'Space Mono', 'Courier New', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--bark); background: var(--white); line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--green-deep); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--bronze); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; height: 64px; gap: 2rem; }
+  .nav-logo { display: flex; align-items: center; gap: .75rem; text-decoration: none; flex-shrink: 0; }
+  .nav-wm { display: flex; flex-direction: column; line-height: 1.1; }
+  .nav-wm-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: #F4ECD7; }
+  .nav-wm-sub  { font-family: var(--serif); font-size: .72rem; color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; margin-left: auto; align-items: center; }
+  .nav-links a { font-size: .85rem; color: #D4BF90; text-decoration: none; transition: color .15s; }
+  .nav-links a:hover, .nav-links a.active { color: #F4ECD7; }
+  .nav-cta { background: var(--gold)!important; color: var(--green-deep)!important; padding: .4rem 1.1rem!important; border-radius: 4px; font-weight: 600!important; }
+  .nav-cta:hover { background: var(--wheat)!important; }
+  @media(max-width:640px){ .nav-links { display: none; } }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--cream); border-bottom: 1px solid var(--wheat); padding: .6rem 2rem; }
+  .breadcrumb-inner { max-width: 1200px; margin: 0 auto; }
+  .breadcrumb p { font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; color: var(--stone); }
+  .breadcrumb a { color: var(--stone); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { color: var(--bronze); margin: 0 .4rem; }
+
+  /* PAGE HEADER */
+  .page-header { background: var(--green-deep); padding: 4rem 2rem 3.5rem; position: relative; }
+  .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: end; }
+  @media(max-width:720px){ .header-inner { grid-template-columns: 1fr; } }
+  .page-tag { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .page-header h1 { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); color: #F4ECD7; line-height: 1.15; margin-bottom: 1rem; }
+  .page-header p { font-size: 1rem; color: #C4B88A; max-width: 600px; line-height: 1.8; font-weight: 300; }
+  .header-stat-block { display: flex; flex-direction: column; gap: .75rem; flex-shrink: 0; }
+  .header-stat { text-align: right; }
+  .header-stat-val { display: block; font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .header-stat-label { font-size: .68rem; color: #4A6A54; letter-spacing: .1em; text-transform: uppercase; }
+
+  /* SHARED */
+  .section { padding: 4.5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .section h2 { font-family: var(--serif); font-size: clamp(1.5rem, 2.5vw, 2.2rem); color: var(--green-deep); line-height: 1.2; margin-bottom: 1rem; }
+  p.body { font-size: .95rem; color: var(--stone); line-height: 1.85; margin-bottom: 1rem; max-width: 760px; }
+
+  /* PHILOSOPHY STRIP */
+  .philosophy { background: var(--bark); padding: 3rem 2rem; }
+  .philosophy-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  @media(max-width:720px){ .philosophy-inner { grid-template-columns: 1fr; } }
+  .phil-item { border-left: 2px solid #2A5A3A; padding-left: 1.25rem; }
+  .phil-title { font-family: var(--serif); font-size: 1rem; color: var(--gold); margin-bottom: .4rem; }
+  .phil-text { font-size: .85rem; color: #6B8A78; line-height: 1.7; }
+
+  /* CATALOG SECTION */
+  .catalog-section { background: var(--cream); }
+
+  /* Dataset group */
+  .dataset-group { margin-bottom: 3.5rem; }
+  .dataset-group:last-child { margin-bottom: 0; }
+  .group-header { display: flex; align-items: baseline; gap: 1.25rem; margin-bottom: 1.75rem; padding-bottom: .875rem; border-bottom: 2px solid var(--wheat); }
+  .group-title { font-family: var(--serif); font-size: 1.3rem; color: var(--green-deep); }
+  .group-badge { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 3px; }
+  .badge-live { background: rgba(61,107,79,.15); border: 1px solid var(--green-mid); color: var(--green-mid); }
+  .badge-dev  { background: rgba(184,137,42,.1); border: 1px solid var(--bronze); color: var(--gold); }
+  .badge-plan { background: rgba(107,95,74,.1); border: 1px solid var(--stone); color: var(--stone); }
+
+  /* Dataset rows */
+  .dataset-list { display: flex; flex-direction: column; gap: 1rem; }
+  .dataset-row {
+    background: var(--white);
+    border: 1px solid var(--wheat);
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0;
+    overflow: hidden;
+    transition: border-color .2s;
+  }
+  .dataset-row:hover { border-color: var(--gold); }
+
+  .dataset-format {
+    background: var(--green-deep);
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    gap: .3rem;
+  }
+  .format-icon { width: 28px; height: 28px; }
+  .format-label { font-family: var(--mono); font-size: .6rem; font-weight: 700; color: var(--gold); letter-spacing: .08em; text-transform: uppercase; }
+
+  .dataset-body { padding: 1.1rem 1.5rem; }
+  .dataset-name { font-family: var(--serif); font-size: 1rem; color: var(--green-deep); font-weight: 700; margin-bottom: .2rem; }
+  .dataset-desc { font-size: .85rem; color: var(--stone); line-height: 1.6; margin-bottom: .5rem; }
+  .dataset-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .dtag { font-family: var(--mono); font-size: .58rem; color: var(--stone); border: 1px solid var(--wheat); border-radius: 3px; padding: .12rem .45rem; letter-spacing: .06em; }
+
+  .dataset-action {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: .5rem;
+    border-left: 1px solid var(--wheat);
+    min-width: 150px;
+  }
+  @media(max-width:640px){
+    .dataset-row { grid-template-columns: 1fr; }
+    .dataset-format { flex-direction: row; min-width: unset; padding: .75rem 1.25rem; justify-content: flex-start; border-bottom: 1px solid #2A5A3A; }
+    .dataset-action { align-items: flex-start; border-left: none; border-top: 1px solid var(--wheat); }
+  }
+  .dl-btn {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: var(--gold); color: var(--green-deep);
+    padding: .45rem 1rem; border-radius: 4px;
+    font-family: var(--sans); font-size: .78rem; font-weight: 600;
+    text-decoration: none; white-space: nowrap;
+    transition: background .15s;
+  }
+  .dl-btn:hover { background: var(--wheat); }
+  .dl-btn.secondary {
+    background: var(--cream); color: var(--green-deep);
+    border: 1px solid var(--wheat);
+  }
+  .dl-btn.secondary:hover { background: var(--gold); border-color: var(--gold); }
+  .dl-btn.coming-soon {
+    background: transparent; color: var(--stone);
+    border: 1px solid var(--wheat); cursor: default;
+  }
+  .file-size { font-family: var(--mono); font-size: .62rem; color: var(--stone); letter-spacing: .06em; }
+
+  /* STANDARDS & FORMATS */
+  .standards-section { background: var(--white); }
+  .standards-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+  @media(max-width:720px){ .standards-layout { grid-template-columns: 1fr; } }
+
+  .standards-list { display: flex; flex-direction: column; gap: 0; }
+  .std-row { display: flex; gap: 1rem; padding: .875rem 0; border-bottom: 1px solid var(--wheat); align-items: start; }
+  .std-row:last-child { border-bottom: none; }
+  .std-key { font-family: var(--mono); font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: var(--stone); width: 110px; flex-shrink: 0; padding-top: .15rem; }
+  .std-val { font-size: .9rem; color: var(--bark); line-height: 1.5; }
+  .std-val code { font-family: var(--mono); font-size: .78rem; color: var(--green-deep); background: var(--cream); padding: .1rem .4rem; border-radius: 3px; border: 1px solid var(--wheat); }
+  .std-val small { display: block; font-size: .78rem; color: var(--stone); margin-top: .2rem; }
+
+  /* HOW TO OPEN */
+  .howto-card { background: var(--cream); border: 1px solid var(--wheat); border-radius: 8px; padding: 2rem; }
+  .howto-card h3 { font-family: var(--serif); color: var(--green-deep); font-size: 1.1rem; margin-bottom: 1.25rem; }
+  .howto-item { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .howto-item:last-child { margin-bottom: 0; }
+  .howto-app { width: 36px; height: 36px; border-radius: 6px; background: var(--green-deep); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .howto-body { display: flex; flex-direction: column; }
+  .howto-name { font-size: .88rem; font-weight: 600; color: var(--green-deep); }
+  .howto-desc { font-size: .8rem; color: var(--stone); line-height: 1.6; margin-top: .15rem; }
+  .howto-link { font-size: .75rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+  .howto-link:hover { color: var(--bronze); }
+
+  /* LICENSE SECTION */
+  .license-section { background: var(--green-deep); }
+  .license-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  .license-inner .section-label { color: var(--gold); }
+  .license-inner h2 { font-family: var(--serif); color: #F4ECD7; font-size: clamp(1.5rem, 2.5vw, 2.2rem); margin-bottom: 1rem; }
+  .license-inner > p { font-size: .95rem; color: #8AAA92; max-width: 680px; line-height: 1.85; margin-bottom: 2rem; }
+
+  .license-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .license-card { background: rgba(255,255,255,.04); border: 1px solid #2A5A3A; border-radius: 6px; padding: 1.25rem; }
+  .license-name { font-family: var(--mono); font-size: .72rem; font-weight: 700; color: var(--gold); letter-spacing: .08em; display: block; margin-bottom: .35rem; }
+  .license-applies { font-size: .78rem; color: #8AAA92; line-height: 1.6; margin-bottom: .5rem; }
+  .license-link { font-size: .75rem; color: #4A6A54; text-decoration: none; }
+  .license-link:hover { color: var(--gold); }
+
+  /* REQUEST / CONTRIBUTE */
+  .request-section { background: var(--cream); }
+  .request-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+  @media(max-width:720px){ .request-layout { grid-template-columns: 1fr; } }
+  .request-card { background: var(--white); border: 1px solid var(--wheat); border-radius: 8px; padding: 2rem; }
+  .request-card h3 { font-family: var(--serif); font-size: 1.15rem; color: var(--green-deep); margin-bottom: .75rem; }
+  .request-card p { font-size: .88rem; color: var(--stone); line-height: 1.75; margin-bottom: 1rem; }
+  .request-card p:last-of-type { margin-bottom: 1.25rem; }
+  .btn-primary { background: var(--gold); color: var(--green-deep); padding: .75rem 1.75rem; border-radius: 4px; font-family: var(--sans); font-size: .88rem; font-weight: 600; text-decoration: none; transition: background .15s; display: inline-block; }
+  .btn-primary:hover { background: var(--wheat); }
+
+  /* FOOTER */
+  footer { background: var(--bark); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem; }
+  @media(max-width:640px){ .footer-inner { grid-template-columns: 1fr; } }
+  .footer-brand p { font-size: .82rem; line-height: 1.7; color: #4A3F32; max-width: 280px; margin-top: .75rem; }
+  .footer-col h4 { font-family: var(--mono); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); margin-bottom: .875rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: .4rem; }
+  .footer-col a { font-size: .82rem; color: #4A3F32; text-decoration: none; transition: color .15s; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom { max-width: 1200px; margin: 2.5rem auto 0; padding-top: 1.25rem; border-top: 1px solid #2A2018; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  .footer-bottom p, .footer-bottom a { font-family: var(--mono); font-size: .62rem; color: #3A3028; letter-spacing: .06em; text-decoration: none; }
+  .footer-bottom a:hover { color: var(--stone); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 80 80" width="36" height="36" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#F4ECD7"/>
+      </svg>
+      <div class="nav-wm">
+        <span class="nav-wm-main">Moore Energy &amp; Mapping</span>
+        <span class="nav-wm-sub">Moore County, NC</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects/">Mapping Projects</a></li>
+      <li><a href="energy.html">Energy Resources</a></li>
+      <li><a href="open-data.html" class="active">Open Data</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="get-involved.html" class="nav-cta">Get Involved</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <p><a href="index.html">Home</a><span>/</span>Open Data</p>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <div>
+      <span class="page-tag">Openly licensed · No account required · EPSG:32119</span>
+      <h1>The data we build<br>belongs to the community.</h1>
+      <p>Every spatial dataset, map product, and GIS layer Moore Energy &amp; Mapping produces is released under an open license. No paywalls, no registration, no embargo periods. Download it, use it, build on it.</p>
+    </div>
+    <div class="header-stat-block">
+      <div class="header-stat">
+        <span class="header-stat-val">4</span>
+        <span class="header-stat-label">Live datasets</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-val">3</span>
+        <span class="header-stat-label">In development</span>
+      </div>
+      <div class="header-stat">
+        <span class="header-stat-val">0</span>
+        <span class="header-stat-label">Paywalls</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<div class="philosophy">
+  <div class="philosophy-inner">
+    <div class="phil-item">
+      <div class="phil-title">Open by default</div>
+      <div class="phil-text">Every dataset starts with an open license. Restrictions are the exception, never the default. If public data went into building it, public access comes out the other side.</div>
+    </div>
+    <div class="phil-item">
+      <div class="phil-title">No dark data</div>
+      <div class="phil-text">Geospatial data about public land, public infrastructure, and public recreation belongs to the public. We don't sit on it, we don't restrict it to subscribers, and we don't make you ask permission to use it.</div>
+    </div>
+    <div class="phil-item">
+      <div class="phil-title">Built to last</div>
+      <div class="phil-text">We use durable open formats — GeoPackage over Shapefile, GeoTIFF over proprietary rasters, standard projections — so the data works in any tool and stays usable as software evolves.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DATA CATALOG -->
+<section class="section catalog-section">
+  <div class="section-inner">
+    <span class="section-label">Data catalog</span>
+    <h2>Available datasets</h2>
+    <p class="body">All datasets are downloadable directly below. GeoPackage files open in QGIS, ArcGIS Pro, and any OGR-compatible tool. KMZ files open in Google Earth Pro. All coordinate reference system information is embedded in each file.</p>
+
+    <!-- BEAR CREEK GROUP -->
+    <div class="dataset-group">
+      <div class="group-header">
+        <span class="group-title">Bear Creek Trail System — Robbins, NC</span>
+        <span class="group-badge badge-live">Live · March 2026</span>
+      </div>
+
+      <div class="dataset-list">
+
+        <!-- GeoPackage -->
+        <div class="dataset-row">
+          <div class="dataset-format">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#D4BF90" stroke-width="1"/>
+              <line x1="2" y1="10" x2="26" y2="10" stroke="#3D6B4F" stroke-width=".8"/>
+              <line x1="10" y1="2" x2="10" y2="26" stroke="#3D6B4F" stroke-width=".8"/>
+              <circle cx="6" cy="16" r="2" fill="#B8892A"/>
+              <circle cx="18" cy="20" r="2" fill="#B8892A"/>
+              <circle cx="22" cy="14" r="2" fill="#B8892A"/>
+            </svg>
+            <span class="format-label">GPKG</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name">Bear Creek Trail System — Vector Layers</div>
+            <div class="dataset-desc">Four attributed vector layers: trails (name, surface, permitted use, length in miles), amenity points (kiosks, restrooms, parking, disc golf baskets), reservoir water body polygon, and system boundary. All layers in EPSG:32119 NC State Plane NAD83.</div>
+            <div class="dataset-tags">
+              <span class="dtag">EPSG:32119</span>
+              <span class="dtag">4 layers</span>
+              <span class="dtag">trails</span>
+              <span class="dtag">amenities</span>
+              <span class="dtag">hydrology</span>
+              <span class="dtag">OGC GeoPackage</span>
+              <span class="dtag">CC BY 4.0</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <a href="downloads/Bear_Creek_Trails.gpkg" class="dl-btn" download>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12l-4-4h2.5V4h3v4H12L8 12zM3 14h10v-1.5H3V14z"/></svg>
+              Download
+            </a>
+            <span class="file-size">GPKG · ~2 MB</span>
+          </div>
+        </div>
+
+        <!-- KMZ -->
+        <div class="dataset-row">
+          <div class="dataset-format">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#D4BF90" stroke-width="1"/>
+              <circle cx="14" cy="10" r="4" stroke="#B8892A" stroke-width="1.2"/>
+              <path d="M7 22 Q10 16 14 18 Q18 20 21 14" stroke="#B8892A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span class="format-label">KMZ</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name">Bear Creek Trail System — KMZ Superoverlay</div>
+            <div class="dataset-desc">329-tile georeferenced image pyramid spanning zoom levels 13–17. Opens in Google Earth Pro and drapes the full trail map directly onto 3D terrain. The map aligns to real ground positions at zoom 17 — individual trail segments and disc golf baskets resolve against the Sandhills landscape.</div>
+            <div class="dataset-tags">
+              <span class="dtag">KMZ / KML</span>
+              <span class="dtag">Zoom 13–17</span>
+              <span class="dtag">329 tiles</span>
+              <span class="dtag">Google Earth</span>
+              <span class="dtag">terrain-draped</span>
+              <span class="dtag">35.4334°N 79.6050°W</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <a href="downloads/Bear_Creek_Trail_Map_super_overlay.kmz" class="dl-btn" download>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12l-4-4h2.5V4h3v4H12L8 12zM3 14h10v-1.5H3V14z"/></svg>
+              Download
+            </a>
+            <span class="file-size">KMZ · 5.4 MB</span>
+          </div>
+        </div>
+
+        <!-- PDF -->
+        <div class="dataset-row">
+          <div class="dataset-format">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#D4BF90" stroke-width="1"/>
+              <path d="M8 11 L20 11" stroke="#B8892A" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M8 15 L16 15" stroke="#B8892A" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M8 19 L13 19" stroke="#D4BF90" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <span class="format-label">PDF</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name">Bear Creek Trail System — Print-Ready Map</div>
+            <div class="dataset-desc">24"×36" cartographic layout at 300 DPI. Full legend, north arrow, scale bar, disc golf inset, data source credits, and title block. USGS hillshade terrain base, NC OneMap imagery, OSM trail geometry. Suitable for professional print production, kiosk installation, or digital distribution.</div>
+            <div class="dataset-tags">
+              <span class="dtag">PDF</span>
+              <span class="dtag">300 DPI</span>
+              <span class="dtag">24"×36"</span>
+              <span class="dtag">print-ready</span>
+              <span class="dtag">USGS hillshade</span>
+              <span class="dtag">CC BY 4.0</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <a href="downloads/Bear_Creek_Trail_Map.pdf" class="dl-btn" download>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12l-4-4h2.5V4h3v4H12L8 12zM3 14h10v-1.5H3V14z"/></svg>
+              Download
+            </a>
+            <span class="file-size">PDF · 300 DPI</span>
+          </div>
+        </div>
+
+        <!-- Schematic HTML -->
+        <div class="dataset-row">
+          <div class="dataset-format">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#D4BF90" stroke-width="1"/>
+              <path d="M8 10 L12 14 L8 18" stroke="#B8892A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="14" y1="18" x2="20" y2="18" stroke="#D4BF90" stroke-width="1" stroke-linecap="round"/>
+            </svg>
+            <span class="format-label">HTML</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name">Bear Creek Trail System — Interactive Schematic</div>
+            <div class="dataset-desc">Standalone SVG reference diagram embedded in a single HTML file. Color-coded trail routes, disc golf hole positions, waterways, and MTB use designations — all labeled. No internet connection required once downloaded. Opens in any browser.</div>
+            <div class="dataset-tags">
+              <span class="dtag">HTML / SVG</span>
+              <span class="dtag">standalone</span>
+              <span class="dtag">offline-capable</span>
+              <span class="dtag">reference diagram</span>
+              <span class="dtag">no install</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <a href="downloads/bear_creek_trail_schematic.html" class="dl-btn secondary">
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm2 2h6v1H5V5zm0 2h6v1H5V7zm0 2h4v1H5V9z"/></svg>
+              Open
+            </a>
+            <span class="file-size">HTML · ~80 KB</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- IN DEVELOPMENT GROUP -->
+    <div class="dataset-group">
+      <div class="group-header">
+        <span class="group-title">In Development</span>
+        <span class="group-badge badge-dev">Coming 2026</span>
+      </div>
+
+      <div class="dataset-list">
+
+        <div class="dataset-row" style="opacity:.7;">
+          <div class="dataset-format" style="background:#1A1A14;">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#4A4A3A" stroke-width="1"/>
+              <circle cx="14" cy="14" r="5" stroke="#6B5F4A" stroke-width="1"/>
+              <line x1="14" y1="9" x2="14" y2="14" stroke="#6B5F4A" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="format-label" style="color:#4A4A3A;">GPKG</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name" style="color:var(--stone);">Hurricane Helene SAR Damage Assessment — Lake Lure / Chimney Rock</div>
+            <div class="dataset-desc">Pre/post flood change detection dataset derived from Sentinel-1 SAR imagery covering the Hurricane Helene impact zone (fall 2024) in the Lake Lure and Chimney Rock corridor. Will include mass movement polygons, channel avulsion lines, and debris deposition extents in EPSG:32119.</div>
+            <div class="dataset-tags">
+              <span class="dtag">SAR · Sentinel-1</span>
+              <span class="dtag">change detection</span>
+              <span class="dtag">Helene recovery</span>
+              <span class="dtag">Rutherford County</span>
+              <span class="dtag">GPKG + GeoTIFF</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <span class="dl-btn coming-soon">In development</span>
+            <span class="file-size">Est. mid-2026</span>
+          </div>
+        </div>
+
+        <div class="dataset-row" style="opacity:.7;">
+          <div class="dataset-format" style="background:#1A1A14;">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#4A4A3A" stroke-width="1"/>
+              <circle cx="14" cy="14" r="4" stroke="#6B5F4A" stroke-width="1"/>
+              <path d="M14 6 L14 3" stroke="#6B5F4A" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M20 8 L22 6" stroke="#6B5F4A" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M22 14 L25 14" stroke="#6B5F4A" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="format-label" style="color:#4A4A3A;">GPKG</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name" style="color:var(--stone);">Moore County Energy Infrastructure — Spatial Dataset</div>
+            <div class="dataset-desc">Publicly mapped energy infrastructure for Moore County: utility corridors, substation locations, grid vulnerability zones, and renewable energy siting potential. Intended to support community resilience planning, emergency preparedness, and public education.</div>
+            <div class="dataset-tags">
+              <span class="dtag">energy infrastructure</span>
+              <span class="dtag">grid mapping</span>
+              <span class="dtag">solar siting</span>
+              <span class="dtag">Moore County</span>
+              <span class="dtag">community resilience</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <span class="dl-btn coming-soon">Planned</span>
+            <span class="file-size">Est. late 2026</span>
+          </div>
+        </div>
+
+        <div class="dataset-row" style="opacity:.7;">
+          <div class="dataset-format" style="background:#1A1A14;">
+            <svg class="format-icon" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="2" width="24" height="24" rx="3" stroke="#4A4A3A" stroke-width="1"/>
+              <path d="M5 20 Q10 12 14 15 Q18 18 23 10" stroke="#6B5F4A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span class="format-label" style="color:#4A4A3A;">GPKG</span>
+          </div>
+          <div class="dataset-body">
+            <div class="dataset-name" style="color:var(--stone);">Robbins Community Trail Network — Extended Dataset</div>
+            <div class="dataset-desc">Expansion of the Bear Creek dataset to cover the full Robbins community trail network including connector routes, proposed future trails, and integration with regional greenway planning. Will include updated GeoPackage, PDF, and KMZ.</div>
+            <div class="dataset-tags">
+              <span class="dtag">trail network</span>
+              <span class="dtag">Robbins, NC</span>
+              <span class="dtag">greenway</span>
+              <span class="dtag">community planning</span>
+            </div>
+          </div>
+          <div class="dataset-action">
+            <span class="dl-btn coming-soon">Planned</span>
+            <span class="file-size">TBD</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- STANDARDS & HOW TO OPEN -->
+<section class="section standards-section">
+  <div class="section-inner">
+    <span class="section-label">Data standards</span>
+    <h2>What we use and why</h2>
+    <p class="body">Consistent standards mean the data works in any tool, now and in the future. Here's what we use across all Moore Energy &amp; Mapping datasets.</p>
+
+    <div class="standards-layout">
+
+      <div>
+        <div class="standards-list">
+          <div class="std-row">
+            <span class="std-key">CRS</span>
+            <span class="std-val">
+              <code>EPSG:32119</code> — NC State Plane NAD83
+              <small>All vector data authored in NC State Plane. Meters-based, accurate for NC linear measurements. WGS84 / EPSG:4326 used for KML/KMZ files per OGC standard.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">Vector format</span>
+            <span class="std-val">
+              <code>GeoPackage (.gpkg)</code>
+              <small>OGC-standard single-file container. Replaces Shapefile for all new production. Supports multiple layers, long field names, UTF-8, and spatial indexes natively.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">Raster format</span>
+            <span class="std-val">
+              <code>GeoTIFF (.tif)</code>
+              <small>Open, georeferenced raster standard for imagery and DEM products. Cloud-optimized GeoTIFF (COG) used for larger datasets where applicable.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">3D / terrain</span>
+            <span class="std-val">
+              <code>KMZ / KML</code>
+              <small>OGC-standard for georeferenced image overlays, terrain-draped maps, and point/line features in Google Earth and compatible viewers.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">GIS software</span>
+            <span class="std-val">
+              QGIS (primary) · open-source, all platforms
+              <small>All products are tested and verified in QGIS. ArcGIS Pro and GDAL/OGR compatibility confirmed. No proprietary format lock-in.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">Elevation data</span>
+            <span class="std-val">
+              USGS National Map — 1m QL1 LiDAR-derived DEM
+              <small>Highest-resolution publicly available terrain data for the Sandhills. Used for hillshade generation, contour derivation, and slope analysis.</small>
+            </span>
+          </div>
+          <div class="std-row">
+            <span class="std-key">Base data</span>
+            <span class="std-val">
+              NC OneMap · OpenStreetMap (ODbL) · USGS
+              <small>All source data is publicly licensed. Derived products are released under licenses compatible with source data terms.</small>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="howto-card">
+          <h3>How to open these files</h3>
+
+          <div class="howto-item">
+            <div class="howto-app">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="16" height="16" rx="2" fill="#3D6B4F"/>
+                <path d="M5 10 Q8 6 10 8 Q12 10 15 7" stroke="#F4ECD7" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                <circle cx="10" cy="14" r="2" fill="#B8892A"/>
+              </svg>
+            </div>
+            <div class="howto-body">
+              <span class="howto-name">QGIS — GeoPackage &amp; GeoTIFF</span>
+              <span class="howto-desc">Drag and drop the .gpkg file into QGIS, or use Layer → Add Layer → Add Vector Layer. All four Bear Creek layers load simultaneously. Free, open-source, all platforms.</span>
+              <a href="https://qgis.org" class="howto-link" target="_blank" rel="noopener">qgis.org →</a>
+            </div>
+          </div>
+
+          <div class="howto-item">
+            <div class="howto-app">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="16" height="16" rx="2" fill="#1C3D2E"/>
+                <circle cx="10" cy="9" r="3" stroke="#B8892A" stroke-width="1.2"/>
+                <path d="M7 16 L10 12 L13 16" stroke="#B8892A" stroke-width="1" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="howto-body">
+              <span class="howto-name">Google Earth Pro — KMZ Superoverlay</span>
+              <span class="howto-desc">Download the .kmz file and double-click it. Google Earth opens, flies to Moore County, and loads the map draped on 3D terrain automatically. Hold Shift + drag to tilt the view. Free.</span>
+              <a href="https://www.google.com/earth/versions/#earth-pro" class="howto-link" target="_blank" rel="noopener">Google Earth Pro →</a>
+            </div>
+          </div>
+
+          <div class="howto-item">
+            <div class="howto-app">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="16" height="16" rx="2" fill="#2A3A5A"/>
+                <path d="M5 13 L8 7 L11 11 L13 9 L16 13" stroke="#D4BF90" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="howto-body">
+              <span class="howto-name">ArcGIS Pro — GeoPackage &amp; GeoTIFF</span>
+              <span class="howto-desc">Add the .gpkg as a database connection or drag directly into the map. All four vector layers are accessible. The KMZ can also be imported into ArcGIS using the KML To Layer tool.</span>
+            </div>
+          </div>
+
+          <div class="howto-item">
+            <div class="howto-app">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="2" y="2" width="16" height="16" rx="2" fill="#3A2A1A"/>
+                <text x="10" y="14" font-family="monospace" font-size="8" fill="#B8892A" text-anchor="middle">{ }</text>
+              </svg>
+            </div>
+            <div class="howto-body">
+              <span class="howto-name">Python / GDAL — programmatic access</span>
+              <span class="howto-desc">GeoPackage files are fully compatible with geopandas, fiona, and GDAL. <code style="font-family:monospace;font-size:.78rem;background:var(--cream);padding:.1rem .3rem;border-radius:2px;">geopandas.read_file("Bear_Creek_Trails.gpkg", layer="trails")</code></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LICENSE -->
+<section class="license-section">
+  <div class="license-inner">
+    <span class="section-label">Licensing</span>
+    <h2>Open licenses, clearly stated</h2>
+    <p>We use established open licenses that are clear about what you can do with the data. The short version: use it, share it, build on it — just credit us and keep the same openness downstream.</p>
+
+    <div class="license-grid">
+
+      <div class="license-card">
+        <span class="license-name">CC BY 4.0</span>
+        <p class="license-applies">Used for: map products (PDF, PNG, print layouts), cartographic data, and documentation. You can use and adapt with attribution.</p>
+        <a href="https://creativecommons.org/licenses/by/4.0/" class="license-link" target="_blank" rel="noopener">creativecommons.org/licenses/by/4.0 →</a>
+      </div>
+
+      <div class="license-card">
+        <span class="license-name">ODbL 1.0</span>
+        <p class="license-applies">Used for: datasets that incorporate OpenStreetMap geometry, consistent with OSM's license. Share-alike requirement applies to derived databases.</p>
+        <a href="https://opendatacommons.org/licenses/odbl/" class="license-link" target="_blank" rel="noopener">opendatacommons.org/licenses/odbl →</a>
+      </div>
+
+      <div class="license-card">
+        <span class="license-name">Public Domain</span>
+        <p class="license-applies">Used for: datasets derived entirely from USGS and federal government sources (elevation data, hydrography). No restrictions of any kind.</p>
+        <a href="https://creativecommons.org/publicdomain/zero/1.0/" class="license-link" target="_blank" rel="noopener">CC0 / Public domain →</a>
+      </div>
+
+      <div class="license-card">
+        <span class="license-name">Attribution</span>
+        <p class="license-applies">All CC BY and ODbL datasets require attribution: <em style="color:#8AAA92;">"Moore Energy &amp; Mapping / Moore County Mapping and Energy Alliance (mooreenergymaps.org)"</em></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DATA REQUEST / CONTRIBUTE -->
+<section class="section request-section">
+  <div class="section-inner">
+    <span class="section-label">Work with us</span>
+    <h2>Request data or contribute to the catalog</h2>
+
+    <!-- DON'T PANIC -->
+    <div id="privacy" style="text-align:center;margin-bottom:3rem;">
+      <details>
+        <summary style="list-style:none;cursor:pointer;display:inline-block;-webkit-list-style:none;">
+          <div style="background:var(--green-deep);border:2px solid var(--gold);border-radius:6px;padding:1.1rem 2.75rem;display:inline-block;transition:border-color .2s;">
+            <span style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:700;color:var(--gold);letter-spacing:.06em;display:block;line-height:1;">DON'T PANIC</span>
+            <span style="font-family:'Space Mono','Courier New',monospace;font-size:.6rem;color:#8AAA92;letter-spacing:.14em;text-transform:uppercase;display:block;margin-top:.4rem;">our position on privacy &amp; personal data &#9660;</span>
+          </div>
+        </summary>
+        <div style="max-width:640px;margin:2rem auto 0;text-align:left;background:var(--white);border:1px solid var(--wheat);border-radius:8px;padding:2rem 2.25rem;">
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;color:var(--green-deep);font-style:italic;margin-bottom:1.5rem;line-height:1.5;">A brief, honest statement. No fine print. No asterisks.</p>
+
+          <p style="font-size:.92rem;color:var(--bark);line-height:1.85;margin-bottom:.875rem;"><strong>We don't collect your data.</strong> This site is static HTML with no analytics, no cookies, and no backend. When you leave, no record of your visit exists. We genuinely do not know who you are, and we'd like to keep it that way — for your benefit, not ours.</p>
+
+          <p style="font-size:.92rem;color:var(--bark);line-height:1.85;margin-bottom:.875rem;">We work with North Carolina's public GIS and tax datasets, which contain personal information about real people — names, addresses, property records. That's public record, and in appropriate contexts it serves legitimate purposes. We use it for technical and spatial reference. We do not republish the personal details inside it, because the fact that something is technically available does not make redistributing it a good idea.</p>
+
+          <p style="font-size:.92rem;color:var(--bark);line-height:1.85;margin-bottom:.875rem;">We will not distribute or redistribute datasets containing individual people's personally identifiable information. US corporations are technically people under the law. We are not lawyers. We will leave that particular puzzle where we found it.</p>
+
+          <p style="font-size:.92rem;color:var(--bark);line-height:1.85;margin-bottom:1.5rem;">Questions? <a href="mailto:info@mooreenergymaps.org" style="color:var(--bronze);font-weight:600;">info@mooreenergymaps.org</a></p>
+
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:.95rem;color:var(--stone);font-style:italic;margin:0;">So it goes.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="request-layout">
+
+      <div class="request-card">
+        <h3>Request a dataset</h3>
+        <p>If you're a Moore County resident, nonprofit, local government, or community organization with a specific mapping or data need — reach out. We can't guarantee a timeline or scope for every request, but we give priority to requests that serve a broad public benefit and align with our mission.</p>
+        <p>Good candidates: trail or park mapping, land use questions, community infrastructure inventory, environmental baseline data, local energy analysis.</p>
+        <a href="/cdn-cgi/l/email-protection#345d5a525b74595b5b4651515a5146534d595544471a5b46530b4741565e51574009705540551446514541514740" class="btn-primary">Submit a data request</a>
+      </div>
+
+      <div class="request-card">
+        <h3>Contribute data or corrections</h3>
+        <p>If you have ground-truth information, field corrections, or local knowledge that would improve our datasets — especially for the Bear Creek trail system — we want to hear it. We validate and integrate community corrections before publishing updated versions.</p>
+        <p>If you're a GIS professional or data producer interested in contributing datasets under a compatible open license, reach out about the catalog submission process.</p>
+        <a href="/cdn-cgi/l/email-protection#523b3c343d123f3d3d2037373c3720352b3f3322217c3d20356d212730383731266f1633263372313d3c26203b3027263b3d3c" class="btn-primary">Get in touch</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 80 80" width="32" height="32" style="margin-bottom:8px;" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#6B5F4A"/>
+      </svg>
+      <span style="font-family:var(--serif);font-size:1rem;font-weight:700;color:#6B5F4A;display:block;margin-bottom:.5rem;">Moore Energy &amp; Mapping</span>
+      <p>A Moore County nonprofit providing precision mapping products, regional spatial data, and energy resilience resources for the NC Sandhills.</p>
+      <p style="margin-top:.5rem;">210 W Salisbury St · Robbins, NC 27325</p>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="projects/">Mapping Projects</a></li>
+        <li><a href="energy.html">Energy Resources</a></li>
+        <li><a href="open-data.html">Open Data</a></li>
+        <li><a href="projects/bear-creek-trail-map.html">Bear Creek Trails</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Organization</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="get-involved.html">Get Involved</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#1970777f76597476766b7c7c777c6b7e607478696a37766b7e">Contact</a></li>
+        <li><a href="open-data.html#privacy">Data Ethics &amp; Privacy</a></li>
+        <li><a href="docs/bylaws.pdf">Bylaws (PDF)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Moore County

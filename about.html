@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Moore Energy & Mapping</title>
+<meta name="description" content="Moore County Mapping and Energy Alliance is a North Carolina nonprofit providing precision mapping products, regional spatial data, and energy resilience resources for the NC Sandhills.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep:#1C3D2E; --green-mid:#3D6B4F; --gold:#B8892A; --bronze:#8A6518;
+    --cream:#F4ECD7; --wheat:#D4BF90; --stone:#6B5F4A; --bark:#231A0E; --white:#FDFAF4;
+    --serif:'Playfair Display',Georgia,serif; --sans:'Source Sans 3',system-ui,sans-serif; --mono:'Space Mono','Courier New',monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--bark); background: var(--white); line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--green-deep); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--bronze); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; height: 64px; gap: 2rem; }
+  .nav-logo { display: flex; align-items: center; gap: .75rem; text-decoration: none; flex-shrink: 0; }
+  .nav-wm { display: flex; flex-direction: column; line-height: 1.1; }
+  .nav-wm-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: #F4ECD7; }
+  .nav-wm-sub { font-family: var(--serif); font-size: .72rem; color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; margin-left: auto; align-items: center; }
+  .nav-links a { font-size: .85rem; color: #D4BF90; text-decoration: none; transition: color .15s; }
+  .nav-links a:hover, .nav-links a.active { color: #F4ECD7; }
+  .nav-cta { background: var(--gold)!important; color: var(--green-deep)!important; padding: .4rem 1.1rem!important; border-radius: 4px; font-weight: 600!important; }
+  .nav-cta:hover { background: var(--wheat)!important; }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--cream); border-bottom: 1px solid var(--wheat); padding: .6rem 2rem; }
+  .breadcrumb-inner { max-width: 1200px; margin: 0 auto; }
+  .breadcrumb p { font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; color: var(--stone); }
+  .breadcrumb a { color: var(--stone); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { color: var(--bronze); margin: 0 .4rem; }
+
+  /* PAGE HEADER */
+  .page-header { background: var(--green-deep); padding: 4rem 2rem 3.5rem; position: relative; }
+  .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .page-tag { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .page-header h1 { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); color: #F4ECD7; line-height: 1.15; margin-bottom: 1rem; }
+  .page-header p { font-size: 1rem; color: #C4B88A; max-width: 640px; line-height: 1.8; font-weight: 300; }
+
+  /* SHARED */
+  .section { padding: 4.5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .section h2 { font-family: var(--serif); font-size: clamp(1.5rem, 2.5vw, 2.2rem); color: var(--green-deep); line-height: 1.2; margin-bottom: 1rem; }
+  p.body { font-size: .96rem; color: var(--stone); line-height: 1.85; margin-bottom: 1rem; max-width: 760px; }
+
+  /* MISSION / VALUES */
+  .mission-section { background: var(--cream); }
+  .mission-layout { display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: start; }
+  @media(max-width: 760px) { .mission-layout { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+  .mission-text h2 { margin-bottom: 1.25rem; }
+
+  .values-card { background: var(--green-deep); border-radius: 8px; padding: 2rem; }
+  .values-card h3 { font-family: var(--serif); color: #F4ECD7; font-size: 1.15rem; margin-bottom: 1.25rem; }
+  .value-item { padding: .75rem 0; border-bottom: 1px solid #2A5A3A; }
+  .value-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .value-name { font-family: var(--serif); font-size: .95rem; font-weight: 700; color: var(--gold); display: block; margin-bottom: .2rem; }
+  .value-desc { font-size: .82rem; color: #8AAA92; line-height: 1.6; }
+
+  /* TEAM */
+  .team-section { background: var(--white); }
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+
+  .team-card { border: 1px solid var(--wheat); border-radius: 8px; overflow: hidden; }
+  .team-card-header { background: var(--green-deep); padding: 1.75rem 1.75rem 1.5rem; display: flex; align-items: flex-start; gap: 1.25rem; }
+  .team-avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--bronze); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--serif); font-size: 1.15rem; font-weight: 700; color: #F4ECD7; }
+  .team-id { display: flex; flex-direction: column; }
+  .team-name { font-family: var(--serif); font-size: 1.15rem; color: #F4ECD7; font-weight: 700; line-height: 1.2; }
+  .team-title { font-family: var(--mono); font-size: .65rem; color: var(--gold); letter-spacing: .1em; margin-top: .3rem; }
+  .team-creds { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .875rem; }
+  .cred { background: rgba(255,255,255,.06); border: 1px solid #2A5A3A; border-radius: 3px; padding: .2rem .55rem; font-family: var(--mono); font-size: .6rem; color: #8AAA92; letter-spacing: .08em; }
+  .team-body { padding: 1.5rem 1.75rem; }
+  .team-body p { font-size: .88rem; color: var(--stone); line-height: 1.75; }
+
+  /* TBD card variant */
+  .team-card.tbd .team-avatar { background: #2A4A38; }
+  .team-card.tbd .team-name { color: #8AAA92; }
+
+  /* ORG / LEGAL */
+  .org-section { background: var(--cream); }
+  .org-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  @media(max-width: 720px) { .org-layout { grid-template-columns: 1fr; } }
+
+  .org-facts { display: flex; flex-direction: column; gap: 0; }
+  .org-fact { display: flex; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--wheat); align-items: baseline; }
+  .org-fact:last-child { border-bottom: none; }
+  .org-fact-key { font-family: var(--mono); font-size: .63rem; text-transform: uppercase; letter-spacing: .1em; color: var(--stone); width: 140px; flex-shrink: 0; padding-top: .1rem; }
+  .org-fact-val { font-size: .9rem; color: var(--bark); line-height: 1.5; }
+  .org-fact-val code { font-family: var(--mono); font-size: .78rem; color: var(--green-deep); background: var(--white); padding: .1rem .4rem; border-radius: 3px; border: 1px solid var(--wheat); }
+
+  /* BLUELENS PARTNER */
+  .partner-card { background: var(--green-deep); border-radius: 8px; padding: 2rem; }
+  .partner-card h3 { font-family: var(--serif); color: #F4ECD7; font-size: 1.2rem; margin-bottom: .875rem; }
+  .partner-card p { font-size: .88rem; color: #8AAA92; line-height: 1.75; margin-bottom: .875rem; }
+  .partner-tag { display: inline-block; background: rgba(184,137,42,.15); border: 1px solid var(--bronze); border-radius: 4px; padding: .3rem .75rem; font-family: var(--mono); font-size: .65rem; color: var(--gold); letter-spacing: .1em; margin-bottom: 1rem; }
+  .partner-link { font-size: .82rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+  .partner-link:hover { color: var(--wheat); }
+
+  /* DATA ACKNOWLEDGMENTS */
+  .data-section { background: var(--white); }
+  .ack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .ack-item { background: var(--cream); border: 1px solid var(--wheat); border-radius: 6px; padding: 1rem 1.25rem; }
+  .ack-source { font-family: var(--mono); font-size: .72rem; font-weight: 700; color: var(--green-deep); display: block; margin-bottom: .3rem; }
+  .ack-desc { font-size: .8rem; color: var(--stone); line-height: 1.5; }
+  .ack-license { font-family: var(--mono); font-size: .6rem; color: var(--wheat); margin-top: .4rem; display: block; }
+
+  /* CTA */
+  .cta-strip { background: var(--green-deep); padding: 4rem 2rem; text-align: center; position: relative; }
+  .cta-strip::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .cta-strip h2 { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); color: #F4ECD7; margin-bottom: 1rem; }
+  .cta-strip p { font-size: 1rem; color: #C4B88A; max-width: 520px; margin: 0 auto 2rem; line-height: 1.75; font-weight: 300; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: var(--green-deep); padding: .875rem 2.25rem; border-radius: 4px; font-family: var(--sans); font-size: .9rem; font-weight: 600; text-decoration: none; letter-spacing: .03em; transition: background .15s; display: inline-block; }
+  .btn-primary:hover { background: var(--wheat); }
+  .btn-outline { border: 1.5px solid #D4BF90; color: #D4BF90; padding: .875rem 2.25rem; border-radius: 4px; font-family: var(--sans); font-size: .9rem; text-decoration: none; letter-spacing: .03em; transition: all .15s; display: inline-block; }
+  .btn-outline:hover { border-color: #F4ECD7; color: #F4ECD7; }
+
+  /* FOOTER */
+  footer { background: var(--bark); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem; }
+  @media(max-width: 640px) { .footer-inner { grid-template-columns: 1fr; } .nav-links { display: none; } }
+  .footer-brand p { font-size: .82rem; line-height: 1.7; color: #4A3F32; max-width: 280px; margin-top: .75rem; }
+  .footer-col h4 { font-family: var(--mono); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); margin-bottom: .875rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: .4rem; }
+  .footer-col a { font-size: .82rem; color: #4A3F32; text-decoration: none; transition: color .15s; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom { max-width: 1200px; margin: 2.5rem auto 0; padding-top: 1.25rem; border-top: 1px solid #2A2018; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; }
+  .footer-bottom p, .footer-bottom a { font-family: var(--mono); font-size: .62rem; color: #3A3028; letter-spacing: .06em; text-decoration: none; }
+  .footer-bottom a:hover { color: var(--stone); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 80 80" width="36" height="36" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#F4ECD7"/>
+      </svg>
+      <div class="nav-wm">
+        <span class="nav-wm-main">Moore Energy &amp; Mapping</span>
+        <span class="nav-wm-sub">Moore County, NC</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects/">Mapping Projects</a></li>
+      <li><a href="energy.html">Energy Resources</a></li>
+      <li><a href="open-data.html">Open Data</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="get-involved.html" class="nav-cta">Get Involved</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <p><a href="index.html">Home</a><span>/</span>About</p>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <span class="page-tag">Moore County Mapping and Energy Alliance · d/b/a Moore Energy &amp; Mapping</span>
+    <h1>Rooted in Moore County.<br>Built to serve the Sandhills.</h1>
+    <p>We are a North Carolina nonprofit bringing professional-grade geospatial analysis, precision mapping products, and energy resilience resources to the communities of Moore County and the greater NC Sandhills region — without the price tag that usually goes with it.</p>
+  </div>
+</div>
+
+<!-- MISSION & VALUES -->
+<section class="section mission-section">
+  <div class="section-inner">
+    <div class="mission-layout">
+
+      <div class="mission-text">
+        <span class="section-label">Mission</span>
+        <h2>Why we exist</h2>
+        <p class="body">Moore County and the surrounding Sandhills region are rich in land, community, and natural resources. They are not rich in access to the kind of professional geospatial services that shape land use decisions, trail infrastructure, energy planning, and environmental stewardship in better-resourced places.</p>
+        <p class="body">Moore Energy &amp; Mapping was organized to close that gap. We apply 30+ years of geospatial intelligence, remote sensing, and applied GIS expertise at the community scale — producing the maps, data, and analysis that local government, nonprofits, land trusts, and residents need but rarely have access to.</p>
+        <p class="body">Everything we produce is built on open-source tools and open data. Every deliverable is released under open licenses. The work stays in the community.</p>
+        <p class="body">We are organized exclusively for charitable, scientific, and educational purposes under Section 501(c)(3) of the Internal Revenue Code. No private benefit. No hidden agenda. The data is yours.</p>
+      </div>
+
+      <div>
+        <div class="values-card">
+          <h3>What we stand for</h3>
+          <div class="value-item">
+            <span class="value-name">Grounded</span>
+            <span class="value-desc">Rooted in Moore County, not abstract. We work from the land outward — local problems, local context, local benefit.</span>
+          </div>
+          <div class="value-item">
+            <span class="value-name">Open</span>
+            <span class="value-desc">Open data. Open source. Open license. What we build, we publish. No paywalls on public benefit work.</span>
+          </div>
+          <div class="value-item">
+            <span class="value-name">Rigorous</span>
+            <span class="value-desc">Community audience, professional standards. Every product is spatially accurate, properly attributed, and built to last.</span>
+          </div>
+          <div class="value-item">
+            <span class="value-name">Accessible</span>
+            <span class="value-desc">Expert-grade tools, community-grade language. We don't put jargon walls between people and the information they need.</span>
+          </div>
+          <div class="value-item">
+            <span class="value-name">Resilient</span>
+            <span class="value-desc">Built for long-term community benefit, not funding cycles. The organization and its data products are designed to endure.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section team-section">
+  <div class="section-inner">
+    <span class="section-label">Board of Directors</span>
+    <h2>The people behind the work</h2>
+    <p class="body">Moore County Mapping and Energy Alliance is governed by a volunteer Board of Directors. Directors serve three-year staggered terms. The Board meets quarterly and is responsible for organizational oversight, financial stewardship, and strategic direction.</p>
+
+    <div class="team-grid">
+
+      <!-- Chris -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-avatar">CC</div>
+          <div class="team-id">
+            <span class="team-name">Christopher Lee Coffey</span>
+            <span class="team-title">President · Board Chair · Technical Director</span>
+            <div class="team-creds">
+              <span class="cred">GISP</span>
+              <span class="cred">GA-II</span>
+              <span class="cred">OSGeo Member</span>
+              <span class="cred">30+ yrs GIS</span>
+            </div>
+          </div>
+        </div>
+        <div class="team-body">
+          <p>Senior AI Architect and geospatial intelligence professional with more than 30 years of experience spanning academic research, federal service, and applied geospatial analytics. Holds the GISP (Geographic Information Systems Professional) and GA-II certifications. Former senior analyst and principal lead with over a decade at the National Geospatial-Intelligence Agency, with deployments supporting AFRICOM, JSOC, and SOCOM. Deep practitioner in SAR change detection, remote sensing, open-source GIS, and off-grid energy systems.</p>
+          <p style="margin-top:.875rem;">Also serves as principal of BlueLens Analytics LLC, a cleared geospatial intelligence consultancy. A longtime advocate for open-source GIS tools in professional and government contexts, and a founding member of the OSGeo community. Holds an M.A. in Geography from Appalachian State University.</p>
+        </div>
+      </div>
+
+      <!-- Logan - TBD details -->
+      <div class="team-card">
+        <div class="team-card-header">
+          <div class="team-avatar">LC</div>
+          <div class="team-id">
+            <span class="team-name">Logan Coffey</span>
+            <span class="team-title">Secretary · Director</span>
+            <div class="team-creds">
+              <span class="cred">Board Director</span>
+            </div>
+          </div>
+        </div>
+        <div class="team-body">
+          <p>Director and Secretary of Moore County Mapping and Energy Alliance. A Moore County community stakeholder with a personal commitment to the environmental, recreational, and energy resilience goals that the organization was built to serve.</p>
+          <p style="margin-top:.875rem; font-family: var(--mono); font-size: .72rem; color: var(--wheat); letter-spacing: .06em;">BIO TO BE UPDATED</p>
+        </div>
+      </div>
+
+      <!-- Third board member TBD -->
+      <div class="team-card tbd">
+        <div class="team-card-header">
+          <div class="team-avatar" style="background:#2A4A38; font-size:.85rem; color:#6B8A78;">TBD</div>
+          <div class="team-id">
+            <span class="team-name" style="color:#6B8A78;">Director · Treasurer</span>
+            <span class="team-title">Board Director</span>
+            <div class="team-creds">
+              <span class="cred">Board Director</span>
+            </div>
+          </div>
+        </div>
+        <div class="team-body">
+          <p style="color: var(--wheat); font-size: .88rem;">This director seat is currently being seated. Moore Energy &amp; Mapping maintains a minimum three-person Board of Directors per its adopted Bylaws.</p>
+          <p style="margin-top:.875rem; font-family: var(--mono); font-size: .72rem; color: var(--wheat); letter-spacing: .06em;">DIRECTOR PENDING FORMAL APPOINTMENT</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ORG / LEGAL -->
+<section class="section org-section" style="background: var(--cream);">
+  <div class="section-inner">
+    <span class="section-label">Organizational structure</span>
+    <h2>Legal and operational structure</h2>
+
+    <div class="org-layout">
+
+      <div>
+        <p class="body">Moore Energy &amp; Mapping is the operating name of Moore County Mapping and Energy Alliance, a nonprofit corporation organized under Chapter 55A of the North Carolina General Statutes. The organization's Articles of Incorporation include the dissolution and limitation-of-activities clauses required for 501(c)(3) recognition. IRS Form 1023-EZ has been submitted for federal tax-exempt determination.</p>
+        <p class="body">The Corporation will have members, as indicated in the Articles of Incorporation. General Members in good standing hold voting rights on specified organizational matters per the adopted Bylaws. Membership enrollment opens following 501(c)(3) determination.</p>
+
+        <div class="org-facts" style="margin-top: 2rem;">
+          <div class="org-fact">
+            <span class="org-fact-key">Legal name</span>
+            <span class="org-fact-val">Moore County Mapping and Energy Alliance</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Operating name</span>
+            <span class="org-fact-val">Moore Energy &amp; Mapping (d/b/a)</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">NC SOS SOSID</span>
+            <span class="org-fact-val"><code>2930299</code></span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Date filed</span>
+            <span class="org-fact-val">October 11, 2024</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">State</span>
+            <span class="org-fact-val">North Carolina nonprofit corporation</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Tax status</span>
+            <span class="org-fact-val">501(c)(3) determination pending</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Fiscal year</span>
+            <span class="org-fact-val">January 1 – December 31</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Principal office</span>
+            <span class="org-fact-val">210 W Salisbury Street, Robbins, NC 27325</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">County</span>
+            <span class="org-fact-val">Moore County, North Carolina</span>
+          </div>
+          <div class="org-fact">
+            <span class="org-fact-key">Governing docs</span>
+            <span class="org-fact-val"><a href="docs/bylaws.pdf" style="color: var(--bronze); text-decoration: none; font-weight: 600;">Bylaws (PDF) →</a></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BlueLens partner card -->
+      <div>
+        <div class="partner-card">
+          <span class="partner-tag">Technical Partner</span>
+          <h3>BlueLens Analytics LLC</h3>
+          <p>Moore Energy &amp; Mapping's primary technical partner is BlueLens Analytics LLC — a cleared geospatial intelligence consultancy registered in North Carolina and operated by the organization's Board Chair, Christopher Coffey.</p>
+          <p>BlueLens provides the technical horsepower behind Moore Energy &amp; Mapping's more advanced deliverables: SAR change detection pipelines, remote sensing analysis, automated geospatial workflows, and defense-grade spatial analytics. The two organizations operate in tandem — BlueLens as the for-profit technical arm, Moore Energy &amp; Mapping as the nonprofit community-facing vehicle for grants, outreach, and mission-driven work.</p>
+          <p>This structure keeps the community programs organizationally distinct from commercial consulting, while ensuring access to the highest-caliber geospatial expertise available in the Sandhills region.</p>
+          <a href="https://bluelensanalytics.com" class="partner-link" target="_blank" rel="noopener">Visit BlueLens Analytics →</a>
+        </div>
+
+        <div style="background: var(--white); border: 1px solid var(--wheat); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem;">
+          <h3 style="font-family: var(--serif); font-size: 1.05rem; color: var(--green-deep); margin-bottom: .875rem;">Contact</h3>
+          <div class="org-facts">
+            <div class="org-fact">
+              <span class="org-fact-key">General</span>
+              <span class="org-fact-val"><a href="/cdn-cgi/l/email-protection#3c55525a537c5153534e595952594e5b455d5258515d4c4c55525b12534e5b" style="color: var(--bronze); text-decoration: none;"><span class="__cf_email__" data-cfemail="a5cccbc3cae5c8cacad7c0c0cbc0d7c2dcc4cbc1c8c4d5d5cccbc28bcad7c2">[email&#160;protected]</span></a></span>
+            </div>
+            <div class="org-fact">
+              <span class="org-fact-key">Technical</span>
+              <span class="org-fact-val"><a href="/cdn-cgi/l/email-protection#b3d0dbc1dac0f3d1dfc6d6dfd6ddc0d2ddd2dfcac7dad0c09dd0dcde" style="color: var(--bronze); text-decoration: none;"><span class="__cf_email__" data-cfemail="accfc4dec5dfeccec0d9c9c0c9c2dfcdc2cdc0d5d8c5cfdf82cfc3c1">[email&#160;protected]</span></a></span>
+            </div>
+            <div class="org-fact">
+              <span class="org-fact-key">Phone</span>
+              <span class="org-fact-val">(910) 986-0943</span>
+            </div>
+            <div class="org-fact">
+              <span class="org-fact-key">Address</span>
+              <span class="org-fact-val">210 W Salisbury St<br>Robbins, NC 27325</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DATA ACKNOWLEDGMENTS -->
+<section class="section data-section">
+  <div class="section-inner">
+    <span class="section-label">Data sources &amp; acknowledgments</span>
+    <h2>Built on open data</h2>
+    <p class="body">All Moore Energy &amp; Mapping geospatial products are built on openly licensed public data. We do not use proprietary base data, and all derived products are released under open licenses consistent with the terms of their source datasets.</p>
+
+    <div class="ack-grid">
+      <div class="ack-item">
+        <span class="ack-source">NC OneMap</span>
+        <span class="ack-desc">North Carolina statewide orthophoto imagery and administrative boundary data.</span>
+        <span class="ack-license">NC CGIA · Public domain</span>
+      </div>
+      <div class="ack-item">
+        <span class="ack-source">USGS National Map</span>
+        <span class="ack-desc">Digital elevation models, hillshade, hydrography, and topographic data. QL1 1m DEM where available.</span>
+        <span class="ack-license">USGS · Public domain</span>
+      </div>
+      <div class="ack-item">
+        <span class="ack-source">OpenStreetMap</span>
+        <span class="ack-desc">Trail geometry, paths, amenities, and land use features via Overpass API and QuickOSM.</span>
+        <span class="ack-license">© OSM contributors · ODbL</span>
+      </div>
+      <div class="ack-item">
+        <span class="ack-source">CARTO</span>
+        <span class="ack-desc">Background basemap tiles for cartographic context and reference.</span>
+        <span class="ack-license">© CARTO · CC BY 3.0</span>
+      </div>
+      <div class="ack-item">
+        <span class="ack-source">QGIS</span>
+        <span class="ack-desc">Primary GIS software for all data production, cartographic layout, and spatial analysis.</span>
+        <span class="ack-license">QGIS.org · GPL v2</span>
+      </div>
+      <div class="ack-item">
+        <span class="ack-source">OSGeo Foundation</span>
+        <span class="ack-desc">Open source geospatial software ecosystem. Moore Energy &amp; Mapping is an OSGeo community organization.</span>
+        <span class="ack-license">osgeo.org</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Moore County deserves better maps.</h2>
+  <p>If you have a mapping need, an energy question, or a project idea that could benefit the Sandhills community — reach out. We are here for exactly that.</p>
+  <div class="cta-actions">
+    <a href="get-involved.html" class="btn-primary">Get Involved</a>
+    <a href="/cdn-cgi/l/email-protection#3950575f56795456564b5c5c575c4b5e4058575d5458494950575e17564b5e" class="btn-outline">Send a Message</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 80 80" width="32" height="32" style="margin-bottom:8px;" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#6B5F4A"/>
+      </svg>
+      <span style="font-family:var(--serif);font-size:1rem;font-weight:700;color:#6B5F4A;display:block;margin-bottom:.5rem;">Moore Energy &amp; Mapping</span>
+      <p>A Moore County nonprofit providing precision mapping products, regional spatial data, and energy resilience resources for the NC Sandhills.</p>
+      <p style="margin-top:.5rem;">210 W Salisbury St · Robbins, NC 27325</p>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="projects/">Mapping Projects</a></li>
+        <li><a href="energy.html">Energy Resources</a></li>
+        <li><a href="open-data.html">Open Data</a></li>
+        <li><a href="projects/bear-creek-trail-map.html">Bear Creek Trails</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Organization</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="get-involved.html">Get Involved</a></li>
+        <li><a href="open-data.html#privacy">Data Ethics &amp; Privacy</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#523b3c343d123f3d

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Resources — Moore Energy & Mapping</title>
+<meta name="description" content="Off-grid solar, battery storage, and energy resilience resources for Moore County and the NC Sandhills. Real-world guidance from a working off-grid facility in Robbins, NC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep: #1C3D2E; --green-mid: #3D6B4F; --gold: #B8892A; --bronze: #8A6518;
+    --cream: #F4ECD7; --wheat: #D4BF90; --stone: #6B5F4A; --bark: #231A0E; --white: #FDFAF4;
+    --amber: #C4760A; --amber-light: #F5E6C8;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Source Sans 3', system-ui, sans-serif;
+    --mono: 'Space Mono', 'Courier New', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--bark); background: var(--white); line-height: 1.7; }
+
+  /* NAV */
+  nav { background: var(--green-deep); position: sticky; top: 0; z-index: 100; border-bottom: 2px solid var(--bronze); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; height: 64px; gap: 2rem; }
+  .nav-logo { display: flex; align-items: center; gap: .75rem; text-decoration: none; flex-shrink: 0; }
+  .nav-wm { display: flex; flex-direction: column; line-height: 1.1; }
+  .nav-wm-main { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: #F4ECD7; }
+  .nav-wm-sub  { font-family: var(--serif); font-size: .72rem; color: var(--gold); font-style: italic; }
+  .nav-links { display: flex; gap: 1.75rem; list-style: none; margin-left: auto; align-items: center; }
+  .nav-links a { font-size: .85rem; color: #D4BF90; text-decoration: none; transition: color .15s; }
+  .nav-links a:hover, .nav-links a.active { color: #F4ECD7; }
+  .nav-cta { background: var(--gold)!important; color: var(--green-deep)!important; padding: .4rem 1.1rem!important; border-radius: 4px; font-weight: 600!important; }
+  .nav-cta:hover { background: var(--wheat)!important; }
+  @media(max-width:640px){ .nav-links { display: none; } }
+
+  /* BREADCRUMB */
+  .breadcrumb { background: var(--cream); border-bottom: 1px solid var(--wheat); padding: .6rem 2rem; }
+  .breadcrumb-inner { max-width: 1200px; margin: 0 auto; }
+  .breadcrumb p { font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; color: var(--stone); }
+  .breadcrumb a { color: var(--stone); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { color: var(--bronze); margin: 0 .4rem; }
+
+  /* PAGE HEADER */
+  .page-header { background: var(--green-deep); padding: 4rem 2rem 3.5rem; position: relative; }
+  .page-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
+  .page-tag { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .page-header h1 { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); color: #F4ECD7; line-height: 1.15; margin-bottom: 1rem; }
+  .page-header p { font-size: 1rem; color: #C4B88A; max-width: 640px; line-height: 1.8; font-weight: 300; }
+
+  /* SHARED */
+  .section { padding: 4.5rem 2rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: var(--mono); font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: .75rem; }
+  .section h2 { font-family: var(--serif); font-size: clamp(1.5rem, 2.5vw, 2.2rem); color: var(--green-deep); line-height: 1.2; margin-bottom: 1rem; }
+  p.body { font-size: .95rem; color: var(--stone); line-height: 1.85; margin-bottom: 1rem; max-width: 760px; }
+
+  /* ALERT BANNER — Dec 2022 event */
+  .alert-section { background: #1A0E06; border-top: 3px solid var(--amber); border-bottom: 3px solid var(--amber); }
+  .alert-inner { max-width: 1200px; margin: 0 auto; padding: 3rem 2rem; display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start; }
+  @media(max-width:640px){ .alert-inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .alert-icon { width: 56px; height: 56px; flex-shrink: 0; }
+  .alert-content .section-label { color: var(--amber); }
+  .alert-content h2 { font-family: var(--serif); font-size: clamp(1.4rem, 2.5vw, 2rem); color: #F5E6C8; margin-bottom: 1rem; line-height: 1.2; }
+  .alert-content p { font-size: .92rem; color: #A88A60; line-height: 1.85; margin-bottom: .875rem; max-width: 680px; }
+  .alert-content p strong { color: #F5E6C8; }
+  .alert-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 1.75rem; padding-top: 1.75rem; border-top: 1px solid #2A1A08; }
+  .alert-stat-val { display: block; font-family: var(--mono); font-size: 1.5rem; font-weight: 700; color: var(--amber); line-height: 1; }
+  .alert-stat-label { font-size: .7rem; color: #6B5030; text-transform: uppercase; letter-spacing: .1em; font-family: var(--sans); margin-top: 4px; display: block; }
+
+  /* STUDIO / CASE STUDY */
+  .studio-section { background: var(--bark); }
+  .studio-inner { max-width: 1200px; margin: 0 auto; padding: 4.5rem 2rem; }
+  .studio-inner .section-label { color: var(--gold); }
+  .studio-inner h2 { font-family: var(--serif); color: #F4ECD7; font-size: clamp(1.5rem, 2.5vw, 2.2rem); margin-bottom: 1rem; }
+  .studio-inner > p { font-size: .95rem; color: #8AAA92; max-width: 740px; line-height: 1.85; margin-bottom: .875rem; }
+
+  .studio-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 3rem; align-items: start; }
+  @media(max-width:760px){ .studio-layout { grid-template-columns: 1fr; } }
+
+  .studio-specs { display: flex; flex-direction: column; gap: 0; }
+  .studio-spec { display: flex; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid #2A2018; align-items: baseline; }
+  .studio-spec:last-child { border-bottom: none; }
+  .spec-key { font-family: var(--mono); font-size: .63rem; text-transform: uppercase; letter-spacing: .1em; color: #4A6A54; width: 150px; flex-shrink: 0; padding-top: .1rem; }
+  .spec-val { font-size: .9rem; color: #C4B88A; line-height: 1.5; }
+  .spec-val strong { color: var(--gold); font-family: var(--mono); font-size: .85rem; }
+
+  .studio-entities { display: flex; flex-direction: column; gap: 1rem; }
+  .entity-card { background: rgba(255,255,255,.04); border: 1px solid #2A5A3A; border-radius: 8px; padding: 1.5rem; }
+  .entity-card-top { display: flex; align-items: center; gap: .875rem; margin-bottom: .75rem; }
+  .entity-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .entity-name { font-family: var(--serif); color: #F4ECD7; font-size: 1rem; font-weight: 700; }
+  .entity-role { font-family: var(--mono); font-size: .63rem; color: var(--gold); letter-spacing: .1em; display: block; margin-top: 2px; }
+  .entity-desc { font-size: .85rem; color: #6B8A78; line-height: 1.7; }
+
+  .studio-system-title { font-family: var(--mono); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; color: #4A6A54; margin: 2.5rem 0 1.25rem; display: block; }
+
+  /* VICTRON COMPONENT CARDS */
+  .component-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; margin-top: 1.25rem; }
+  .component-card { background: rgba(0,0,0,.25); border: 1px solid #1A3020; border-radius: 6px; padding: 1.1rem; }
+  .component-card-name { font-family: var(--sans); font-size: .82rem; font-weight: 600; color: var(--gold); margin-bottom: .25rem; }
+  .component-card-spec { font-family: var(--mono); font-size: .65rem; color: #4A6A54; letter-spacing: .06em; margin-bottom: .5rem; }
+  .component-card-desc { font-size: .78rem; color: #5A7A68; line-height: 1.5; }
+
+  /* SYSTEM TYPES */
+  .types-section { background: var(--cream); }
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.75rem; margin-top: 3rem; }
+  .type-card { background: var(--white); border: 1px solid var(--wheat); border-radius: 8px; padding: 2rem; border-top: 3px solid var(--green-mid); }
+  .type-card.recommended { border-top-color: var(--gold); }
+  .type-badge { display: inline-block; font-family: var(--mono); font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; padding: .2rem .6rem; border-radius: 3px; margin-bottom: 1rem; }
+  .badge-rec { background: rgba(184,137,42,.12); border: 1px solid var(--bronze); color: var(--gold); }
+  .badge-neutral { background: var(--cream); border: 1px solid var(--wheat); color: var(--stone); }
+  .type-card h3 { font-family: var(--serif); font-size: 1.2rem; color: var(--green-deep); margin-bottom: .75rem; }
+  .type-card p { font-size: .88rem; color: var(--stone); line-height: 1.75; margin-bottom: 1rem; }
+  .type-pros-cons { display: flex; flex-direction: column; gap: .35rem; }
+  .pro, .con { font-size: .8rem; line-height: 1.5; padding-left: 1.25rem; position: relative; }
+  .pro::before { content: '+'; position: absolute; left: 0; color: var(--green-mid); font-weight: 700; font-family: var(--mono); }
+  .con::before { content: '–'; position: absolute; left: 0; color: var(--stone); font-weight: 700; font-family: var(--mono); }
+  .pro { color: var(--green-deep); }
+  .con { color: var(--stone); }
+
+  /* COMPONENTS EDUCATION */
+  .components-section { background: var(--white); }
+  .comp-list { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+  .comp-row { display: grid; grid-template-columns: 240px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--wheat); align-items: start; }
+  .comp-row:last-child { border-bottom: none; }
+  @media(max-width:640px){ .comp-row { grid-template-columns: 1fr; gap: 1rem; } }
+  .comp-label { display: flex; flex-direction: column; }
+  .comp-number { font-family: var(--mono); font-size: 2rem; font-weight: 700; color: var(--wheat); line-height: 1; }
+  .comp-name { font-family: var(--serif); font-size: 1.15rem; color: var(--green-deep); margin-top: .25rem; line-height: 1.2; }
+  .comp-example { font-family: var(--mono); font-size: .65rem; color: var(--gold); letter-spacing: .08em; margin-top: .5rem; }
+  .comp-body p { font-size: .9rem; color: var(--stone); line-height: 1.8; margin-bottom: .75rem; }
+  .comp-body p:last-child { margin-bottom: 0; }
+
+  /* SIZING */
+  .sizing-section { background: var(--cream); }
+  .sizing-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; margin-top: 2.5rem; }
+  @media(max-width:720px){ .sizing-layout { grid-template-columns: 1fr; } }
+
+  .sizing-steps { display: flex; flex-direction: column; gap: 1.25rem; }
+  .sizing-step { display: flex; gap: 1.25rem; }
+  .sizing-step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--green-deep); color: var(--gold); font-family: var(--mono); font-size: .8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: .15rem; }
+  .sizing-step-body h4 { font-family: var(--serif); font-size: 1rem; color: var(--green-deep); margin-bottom: .35rem; }
+  .sizing-step-body p { font-size: .87rem; color: var(--stone); line-height: 1.7; }
+  .sizing-step-body code { font-family: var(--mono); font-size: .8rem; background: var(--white); padding: .1rem .4rem; border-radius: 3px; border: 1px solid var(--wheat); color: var(--green-deep); }
+
+  .sizing-example { background: var(--green-deep); border-radius: 8px; padding: 2rem; }
+  .sizing-example h3 { font-family: var(--serif); color: #F4ECD7; font-size: 1.15rem; margin-bottom: 1.25rem; }
+  .example-row { display: flex; justify-content: space-between; align-items: baseline; padding: .6rem 0; border-bottom: 1px solid #2A5A3A; font-size: .85rem; }
+  .example-row:last-child { border-bottom: none; }
+  .ex-label { color: #8AAA92; }
+  .ex-val { font-family: var(--mono); font-size: .82rem; color: var(--gold); font-weight: 700; }
+  .example-note { font-size: .78rem; color: #4A6A54; line-height: 1.6; margin-top: 1.25rem; font-style: italic; }
+
+  /* RESOURCES */
+  .resources-section { background: var(--white); }
+  .resources-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .resource-card { border: 1px solid var(--wheat); border-radius: 6px; padding: 1.25rem; transition: border-color .2s; }
+  .resource-card:hover { border-color: var(--gold); }
+  .resource-tag { font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); display: block; margin-bottom: .5rem; }
+  .resource-name { font-family: var(--serif); font-size: .95rem; color: var(--green-deep); margin-bottom: .4rem; display: block; }
+  .resource-desc { font-size: .82rem; color: var(--stone); line-height: 1.6; }
+  .resource-link { display: inline-block; margin-top: .75rem; font-size: .78rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+  .resource-link:hover { color: var(--bronze); }
+
+  /* CTA */
+  .cta-strip { background: var(--green-deep); padding: 4rem 2rem; text-align: center; position: relative; }
+  .cta-strip::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+  .cta-strip h2 { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); color: #F4ECD7; margin-bottom: 1rem; }
+  .cta-strip p { font-size: 1rem; color: #C4B88A; max-width: 520px; margin: 0 auto 2rem; line-height: 1.75; font-weight: 300; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: var(--green-deep); padding: .875rem 2.25rem; border-radius: 4px; font-family: var(--sans); font-size: .9rem; font-weight: 600; text-decoration: none; transition: background .15s; display: inline-block; }
+  .btn-primary:hover { background: var(--wheat); }
+  .btn-outline { border: 1.5px solid #D4BF90; color: #D4BF90; padding: .875rem 2.25rem; border-radius: 4px; font-family: var(--sans); font-size: .9rem; text-decoration: none; transition: all .15s; display: inline-block; }
+  .btn-outline:hover { border-color: #F4ECD7; color: #F4ECD7; }
+
+  /* FOOTER */
+  footer { background: var(--bark); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2.5rem; }
+  @media(max-width:640px){ .footer-inner { grid-template-columns: 1fr; } }
+  .footer-brand p { font-size: .82rem; line-height: 1.7; color: #4A3F32; max-width: 280px; margin-top: .75rem; }
+  .footer-col h4 { font-family: var(--mono); font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); margin-bottom: .875rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: .4rem; }
+  .footer-col a { font-size: .82rem; color: #4A3F32; text-decoration: none; transition: color .15s; }
+  .footer-col a:hover { color: var(--gold); }
+  .footer-bottom { max-width: 1200px; margin: 2.5rem auto 0; padding-top: 1.25rem; border-top: 1px solid #2A2018; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+  .footer-bottom p, .footer-bottom a { font-family: var(--mono); font-size: .62rem; color: #3A3028; letter-spacing: .06em; text-decoration: none; }
+  .footer-bottom a:hover { color: var(--stone); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <svg viewBox="0 0 80 80" width="36" height="36" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#F4ECD7"/>
+      </svg>
+      <div class="nav-wm">
+        <span class="nav-wm-main">Moore Energy &amp; Mapping</span>
+        <span class="nav-wm-sub">Moore County, NC</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects/">Mapping Projects</a></li>
+      <li><a href="energy.html" class="active">Energy Resources</a></li>
+      <li><a href="open-data.html">Open Data</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="get-involved.html" class="nav-cta">Get Involved</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <p><a href="index.html">Home</a><span>/</span>Energy Resources</p>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="header-inner">
+    <span class="page-tag">Energy Resilience · Solar · Off-Grid · Moore County, NC</span>
+    <h1>Energy resilience isn't optional<br>in Moore County.</h1>
+    <p>We provide practical, experience-backed guidance on solar, battery storage, and off-grid power systems for rural households and small organizations in the NC Sandhills. Not theoretical. We run a fully off-grid professional facility right here in Robbins — and we'll tell you exactly how it works.</p>
+  </div>
+</div>
+
+<!-- DECEMBER 2022 ALERT — Moore County Grid Event -->
+<div class="alert-section">
+  <div class="alert-inner">
+    <svg class="alert-icon" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+      <circle cx="28" cy="28" r="26" stroke="#C4760A" stroke-width="1.5"/>
+      <path d="M28 16 L28 32" stroke="#C4760A" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="28" cy="40" r="2.5" fill="#C4760A"/>
+    </svg>
+    <div class="alert-content">
+      <span class="section-label">Moore County · December 2022</span>
+      <h2>Moore County has seen firsthand what grid failure looks like.</h2>
+      <p>In December 2022, <strong>two Duke Energy substations in Moore County were attacked and taken offline.</strong> Approximately 45,000 customers lost power — nearly the entire county — in freezing winter temperatures. Emergency orders were issued. Schools closed for days. The outage lasted more than 72 hours for most residents, and longer for some.</p>
+      <p>The event made visible something most households — rural or urban — had never had reason to consider: the grid is a single point of failure. When it goes down — whether from infrastructure attack, severe weather, or equipment failure — there is no fallback for households and businesses without independent power capability.</p>
+      <p><strong>Energy resilience is not a fringe concern.</strong> It is a practical, documented need for Moore County residents and organizations. Moore Energy &amp; Mapping exists in part to help the community understand and act on that need.</p>
+      <div class="alert-stats">
+        <div>
+          <span class="alert-stat-val">45,000</span>
+          <span class="alert-stat-label">Customers without power</span>
+        </div>
+        <div>
+          <span class="alert-stat-val">72+ hrs</span>
+          <span class="alert-stat-label">Duration for most customers</span>
+        </div>
+        <div>
+          <span class="alert-stat-val">Dec 2022</span>
+          <span class="alert-stat-label">Winter temperatures</span>
+        </div>
+        <div>
+          <span class="alert-stat-val">2 substations</span>
+          <span class="alert-stat-label">Taken offline simultaneously</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STUDIO CASE STUDY -->
+<section class="studio-section">
+  <div class="studio-inner">
+    <span class="section-label">Proof of concept · Robbins, NC · Moore County Sandhills</span>
+    <h2>The Sandhills Off-Grid Studio — designed, built, and running.</h2>
+
+    <p>The best energy advice comes from people who've actually built the thing. The operational base for both <strong style="color:#F4ECD7;">BlueLens Analytics LLC</strong> and <strong style="color:#F4ECD7;">Moore Energy &amp; Mapping</strong> is a fully off-grid studio, workshop, and professional geospatial data center located on a private property in Robbins, NC — with no Duke Energy connection of any kind.</p>
+
+    <p>The facility was hand-built by <strong style="color:#F4ECD7;">Coffey Carpentry &amp; Joinery</strong> using timber milled directly from the property — longleaf and hardwood framing, maple floors, and finish joinery built to last. The solar and battery storage system was designed and installed in-house using professional-grade Victron Energy components, sized for continuous operation of workstations, servers, communications infrastructure, and shop tools.</p>
+
+    <p>When the grid goes down in Moore County, this facility doesn't notice.</p>
+
+    <div class="studio-layout">
+
+      <!-- Left: system specs -->
+      <div>
+        <span class="studio-system-title">Live system specifications</span>
+        <div class="studio-specs">
+          <div class="studio-spec">
+            <span class="spec-key">Solar array</span>
+            <span class="spec-val"><strong>3,000W</strong> — ground-mounted in two sub-arrays (SE-facing + SW-facing)</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Battery bank</span>
+            <span class="spec-val"><strong>960 Ah · 12V</strong> — dual LFP banks (400 Ah + 560 Ah) · ~11.5 kWh usable</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Inverter / charger</span>
+            <span class="spec-val"><strong>Victron Multiplus 2</strong> — inverter, charger, and transfer switch in one unit</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Charge controllers</span>
+            <span class="spec-val"><strong>5× Victron SmartSolar</strong> MPPT — two 100/50 + three 100/20, split across SE and SW arrays</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Battery monitor</span>
+            <span class="spec-val"><strong>Victron SmartShunt 300A</strong> — real-time state of charge via VE.Direct to Cerbo</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">System monitor</span>
+            <span class="spec-val"><strong>Victron Cerbo GX</strong> — unified control hub, remote monitoring via VRM portal</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Distribution</span>
+            <span class="spec-val"><strong>2× Victron Lynx Distributor</strong> — fused busbar distribution for all loads and sources</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">DC bridging</span>
+            <span class="spec-val"><strong>Victron Orion-Tr Smart 12/12-30</strong> — isolated DC-DC charger for dual bank configuration</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Wiring</span>
+            <span class="spec-val">1/0 AWG welding cable, hydraulic-crimped copper lugs throughout</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Construction</span>
+            <span class="spec-val">Coffey Carpentry &amp; Joinery — timber milled from property, maple finish floors, hand-built joinery</span>
+          </div>
+          <div class="studio-spec">
+            <span class="spec-key">Grid connection</span>
+            <span class="spec-val"><strong>None.</strong> Fully off-grid. No Duke Energy service at this location.</span>
+          </div>
+        </div>
+
+        <span class="studio-system-title" style="margin-top:2.5rem;">Victron component details</span>
+        <div class="component-grid">
+          <div class="component-card">
+            <div class="component-card-name">Multiplus 2</div>
+            <div class="component-card-spec">Inverter · Charger · Transfer switch</div>
+            <div class="component-card-desc">Pure sine wave inverter with built-in charger. Powers all AC loads from the battery bank and handles generator or grid input when available.</div>
+          </div>
+          <div class="component-card">
+            <div class="component-card-name">SmartSolar 100/50 &amp; 100/20</div>
+            <div class="component-card-spec">MPPT solar charge controllers · 5 units</div>
+            <div class="component-card-desc">Two 100/50 units handle the higher-current runs from each ground-mounted sub-array. Three 100/20 units manage supplemental panel strings. All Bluetooth-connected, all report to the Cerbo GX.</div>
+          </div>
+          <div class="component-card">
+            <div class="component-card-name">SmartShunt 300A</div>
+            <div class="component-card-spec">Battery monitor</div>
+            <div class="component-card-desc">Measures current in and out of the battery bank at all times. Feeds accurate state-of-charge data to the Cerbo GX via VE.Direct cable.</div>
+          </div>
+          <div class="component-card">
+            <div class="component-card-name">Cerbo GX</div>
+            <div class="component-card-spec">System control hub</div>
+            <div class="component-card-desc">Aggregates data from all Victron devices. Provides remote monitoring via the VRM web portal — solar production, battery SOC, load, and history accessible from anywhere.</div>
+          </div>
+          <div class="component-card">
+            <div class="component-card-name">Lynx Distributor</div>
+            <div class="component-card-spec">Fused busbar system</div>
+            <div class="component-card-desc">Professional-grade fused distribution points for all DC loads and charge sources. Two units installed for clean, code-correct wiring and easy expansion.</div>
+          </div>
+          <div class="component-card">
+            <div class="component-card-name">Orion-Tr Smart</div>
+            <div class="component-card-spec">12/12-30A DC-DC charger</div>
+            <div class="component-card-desc">Isolated DC-to-DC charger for bridging two separate battery banks without cross-contaminating charge states. Bluetooth configurable.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: entity cards -->
+      <div>
+        <span class="studio-system-title">Three organizations. One facility.</span>
+        <div class="studio-entities">
+
+          <div class="entity-card">
+            <div class="entity-card-top">
+              <div class="entity-dot" style="background:#B8892A;"></div>
+              <div>
+                <span class="entity-name">Moore Energy &amp; Mapping</span>
+                <span class="entity-role">Nonprofit · Community programs · This website</span>
+              </div>
+            </div>
+            <p class="entity-desc">The nonprofit community arm. Provides open-access mapping products, spatial data, and energy education for Moore County. The off-grid studio is the physical proof of what community energy resilience looks like in practice — and the source of the real-world expertise behind this page.</p>
+          </div>
+
+          <div class="entity-card">
+            <div class="entity-card-top">
+              <div class="entity-dot" style="background:#3D6B4F;"></div>
+              <div>
+                <span class="entity-name">BlueLens Analytics LLC</span>
+                <span class="entity-role">Cleared geospatial consultancy · For-profit technical arm</span>
+              </div>
+            </div>
+            <p class="entity-desc">Professional geospatial intelligence, SAR remote sensing, and AI-assisted spatial analysis — operating 24/7 from this off-grid facility. High-performance workstations, storage systems, and communications infrastructure all run on solar and battery power. When Moore County's grid failed in December 2022, BlueLens didn't miss a beat.</p>
+            <a href="https://bluelensanalytics.com" style="font-size:.8rem;color:var(--gold);text-decoration:none;font-weight:600;display:inline-block;margin-top:.75rem;" target="_blank" rel="noopener">bluelensanalytics.com →</a>
+          </div>
+
+          <div class="entity-card">
+            <div class="entity-card-top">
+              <div class="entity-dot" style="background:#8A6518;"></div>
+              <div>
+                <span class="entity-name">Coffey Carpentry &amp; Joinery</span>
+                <span class="entity-role">Master finish carpentry · Moore County Sandhills</span>
+              </div>
+            </div>
+            <p class="entity-desc">The studio and workshop building itself was designed and constructed by Coffey Carpentry &amp; Joinery — timber framed using lumber milled from the property, with maple finish floors and hand-built joinery throughout. The building is as much a demonstration of craft as the solar system inside it is a demonstration of resilience engineering.</p>
+            <a href="https://coffeyjoinery.com" style="font-size:.8rem;color:var(--gold);text-decoration:none;font-weight:600;display:inline-block;margin-top:.75rem;" target="_blank" rel="noopener">coffeyjoinery.com →</a>
+          </div>
+
+        </div>
+
+        <!-- Pull quote -->
+        <div style="background: rgba(184,137,42,.08); border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; padding: 1.5rem; margin-top: 2rem;">
+          <p style="font-family: var(--serif); font-size: 1.05rem; color: #C4B88A; line-height: 1.6; font-style: italic; margin: 0;">"The question isn't whether your power will go out. In rural Moore County, it will. The question is whether you've built something that not only endures the storm, but makes the bad weather comfortable."</p>
+          <p style="font-family: var(--mono); font-size: .65rem; color: #4A6A54; margin-top: .875rem; letter-spacing: .08em;">— Christopher Coffey · Robbins, NC</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM TYPES -->
+<section class="section types-section">
+  <div class="section-inner">
+    <span class="section-label">Understanding your options</span>
+    <h2>Three approaches to energy independence</h2>
+    <p class="body">Not every household or organization needs or wants a fully off-grid setup. The right system depends on your goals, budget, and how much grid dependence you're willing to accept. Here's how the three main approaches compare for Moore County conditions.</p>
+
+    <div class="types-grid">
+
+      <div class="type-card recommended">
+        <span class="type-badge badge-rec">Best for resilience</span>
+        <h3>Hybrid — Grid-tied with battery backup</h3>
+        <p>You remain connected to the grid but maintain a battery bank that automatically takes over when the grid fails. Solar charges the batteries during the day. The most practical choice for most Moore County households.</p>
+        <div class="type-pros-cons">
+          <span class="pro">Keeps the grid as a fallback</span>
+          <span class="pro">Solar offsets your monthly bill</span>
+          <span class="pro">Batteries cover outages automatically</span>
+          <span class="pro">Lower upfront cost than full off-grid</span>
+          <span class="con">Still dependent on Duke Energy long-term</span>
+          <span class="con">Requires grid-tie inverter + batteries</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <span class="type-badge badge-neutral">Maximum independence</span>
+        <h3>Off-Grid — No utility connection</h3>
+        <p>Your system is entirely self-contained. Solar and batteries cover all loads. A generator provides backup on extended cloudy periods. What the Sandhills Studio runs on — and what makes complete sense for rural properties with service access costs or grid vulnerability.</p>
+        <div class="type-pros-cons">
+          <span class="pro">Complete independence from the grid</span>
+          <span class="pro">No monthly utility bill</span>
+          <span class="pro">Works where grid service is costly or unreliable</span>
+          <span class="con">Requires larger battery bank for autonomy</span>
+          <span class="con">Generator backup strongly recommended</span>
+          <span class="con">Higher upfront system cost</span>
+        </div>
+      </div>
+
+      <div class="type-card">
+        <span class="type-badge badge-neutral">Bill reduction only</span>
+        <h3>Grid-Tied — Solar, no batteries</h3>
+        <p>Solar panels feed power directly to your home and export surplus to the grid. Lowest cost entry point, but provides zero resilience — when the grid goes down, this system shuts off automatically for safety. Offers no protection in a December 2022 scenario.</p>
+        <div class="type-pros-cons">
+          <span class="pro">Lowest upfront cost</span>
+          <span class="pro">Net metering credits on your bill</span>
+          <span class="pro">Simple system, easy to install</span>
+          <span class="con">Zero outage protection</span>
+          <span class="con">System shuts down when grid fails</span>
+          <span class="con">No energy independence whatsoever</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SYSTEM COMPONENTS — educational -->
+<section class="section components-section">
+  <div class="section-inner">
+    <span class="section-label">System components</span>
+    <h2>What goes into a working solar system</h2>
+    <p class="body">A complete off-grid or hybrid solar system has five core components that work together. Understanding what each one does — and why quality matters — will help you evaluate any system design or quote you receive.</p>
+
+    <div class="comp-list">
+
+      <div class="comp-row">
+        <div class="comp-label">
+          <span class="comp-number">01</span>
+          <span class="comp-name">Solar Panels</span>
+          <span class="comp-example">Ex: 4–8 × 250–400W panels</span>
+        </div>
+        <div class="comp-body">
+          <p>The panels convert sunlight to DC electricity. For a household-scale system in Moore County, a 2,000–4,000W array is a reasonable starting point for a home with moderate consumption. Panels degrade slowly (0.5–1% per year) and typically carry 25-year production warranties. Monocrystalline panels are the current standard — higher efficiency in lower light conditions than older polycrystalline designs.</p>
+          <p>The Sandhills Studio runs 3,000W of panels — sufficient to fully recharge a 400Ah LFP bank in a good sun day and cover continuous professional loads simultaneously.</p>
+        </div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">
+          <span class="comp-number">02</span>
+          <span class="comp-name">MPPT Charge Controller</span>
+          <span class="comp-example">Ex: Victron SmartSolar 100/50 &amp; 100/20</span>
+        </div>
+        <div class="comp-body">
+          <p>The charge controller sits between the solar panels and the battery bank. An MPPT (Maximum Power Point Tracking) controller continuously adjusts its input to extract the maximum available power from the panels regardless of light conditions — capturing 20–30% more energy than older PWM-type controllers.</p>
+          <p>Size your charge controller to handle your full panel array with headroom. For a 3,000W array at 12V, you need substantial controller capacity — the Sandhills Studio splits the array across five controllers (two 100/50s on the higher-output SE and SW arrays, three 100/20s on supplemental strings). All communicate with the Cerbo GX for unified monitoring.</p>
+        </div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">
+          <span class="comp-number">03</span>
+          <span class="comp-name">Battery Bank</span>
+          <span class="comp-example">Ex: 400Ah 12V LiFePO4</span>
+        </div>
+        <div class="comp-body">
+          <p>The battery bank stores energy for use when the sun isn't shining. LiFePO4 (lithium iron phosphate) is the current standard for off-grid and resilience applications — far superior to lead-acid in every meaningful way: 3–5× more cycle life (3,000–6,000 deep cycles vs. 300–500), 95%+ round-trip efficiency vs. 80% for lead-acid, usable to 80% depth of discharge vs. 50%, and no maintenance required.</p>
+          <p>The Sandhills Studio runs two LFP banks totaling 960Ah — a 400Ah primary bank and a 560Ah secondary, bridged by the Victron Orion-Tr Smart DC-DC charger. Combined usable capacity is approximately 11.5 kWh — enough to run professional workstations, high-draw computing, shop tools, lighting, and communications infrastructure through multiple overcast days. For a household, 10–20 kWh of storage (two to four times this) is a common resilience target.</p>
+        </div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">
+          <span class="comp-number">04</span>
+          <span class="comp-name">Inverter / Charger</span>
+          <span class="comp-example">Ex: Victron Multiplus 2</span>
+        </div>
+        <div class="comp-body">
+          <p>The inverter converts DC battery power to AC for standard household loads. An inverter/charger combo — like the Victron Multiplus 2 — also accepts AC input from a generator or the grid to charge the batteries, and acts as an automatic transfer switch that shifts between power sources seamlessly. A quality pure sine wave inverter is essential for sensitive electronics, computers, and anything with a motor.</p>
+          <p>Size your inverter to your peak load — what you might run simultaneously at maximum. A 3,000W inverter covers most household scenarios. The Multiplus 2 also supports ESS (Energy Storage System) programming for sophisticated grid-interaction strategies.</p>
+        </div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">
+          <span class="comp-number">05</span>
+          <span class="comp-name">System Monitor</span>
+          <span class="comp-example">Ex: Victron Cerbo GX</span>
+        </div>
+        <div class="comp-body">
+          <p>A GX-type monitoring device connects all your Victron components via VE.Direct and VE.Bus cables, aggregates their data, and makes it available locally and remotely through the Victron VRM web portal. From a phone or browser, you can see real-time solar production, battery state of charge, load draw, grid status, and historical data — from anywhere with internet access.</p>
+          <p>For a serious installation, this is not optional. It's the difference between flying blind and having full situational awareness of your energy system. The Cerbo GX also enables control of compatible devices remotely — adjusting charge setpoints, inverter modes, or ESS strategies without physically touching the system.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SIZING YOUR SYSTEM -->
+<section class="section sizing-section">
+  <div class="section-inner">
+    <span class="section-label">System sizing basics</span>
+    <h2>How to think about your own system</h2>
+    <p class="body">Every system starts with the same question: how much power do you actually use? The answer drives every component decision downstream. Here's a simplified version of the process.</p>
+
+    <div class="sizing-layout">
+
+      <div class="sizing-steps">
+        <div class="sizing-step">
+          <div class="sizing-step-num">1</div>
+          <div class="sizing-step-body">
+            <h4>Calculate your daily load (Wh/day)</h4>
+            <p>List every device you run, its wattage, and how many hours per day. Sum it up. <code>watts × hours = Wh</code>. A typical Moore County household with modest efficiency runs 5,000–15,000 Wh/day. A well-designed workshop or office can run 2,000–4,000 Wh/day.</p>
+          </div>
+        </div>
+        <div class="sizing-step">
+          <div class="sizing-step-num">2</div>
+          <div class="sizing-step-body">
+            <h4>Size your battery bank for autonomy</h4>
+            <p>Decide how many days of storage you want without solar input — typically 1.5–3 days for most applications. <code>daily load × days ÷ 0.8 (DoD) = Wh of storage needed</code>. Divide by your system voltage (12V, 24V, or 48V) to get Ah.</p>
+          </div>
+        </div>
+        <div class="sizing-step">
+          <div class="sizing-step-num">3</div>
+          <div class="sizing-step-body">
+            <h4>Size your solar array to recharge daily</h4>
+            <p>Moore County averages roughly 4.5–5 peak sun hours per day. <code>daily load ÷ peak sun hours = watts of panel needed</code>, with 20–25% added for system losses. A 5,000 Wh/day load needs roughly 1,400–1,800W of panels.</p>
+          </div>
+        </div>
+        <div class="sizing-step">
+          <div class="sizing-step-num">4</div>
+          <div class="sizing-step-body">
+            <h4>Match your charge controller and inverter</h4>
+            <p>Your charge controller must handle the full panel array current at your system voltage. Your inverter must handle your peak simultaneous load — not your average, your worst-case. Add 25% headroom to both.</p>
+          </div>
+        </div>
+        <div class="sizing-step">
+          <div class="sizing-step-num">5</div>
+          <div class="sizing-step-body">
+            <h4>Plan your wiring and protection</h4>
+            <p>DC wiring at high amperage is where mistakes happen. Use appropriately sized cable (1/0 AWG or larger for high-current runs), hydraulic-crimped lugs, and fused distribution (Lynx Distributor or equivalent). Every conductor needs protection sized to the wire, not the load.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked example -->
+      <div class="sizing-example">
+        <h3>Worked example — The Sandhills Studio</h3>
+        <div class="example-row"><span class="ex-label">Daily load target</span><span class="ex-val">~2,500 Wh/day</span></div>
+        <div class="example-row"><span class="ex-label">Autonomy target</span><span class="ex-val">2 days without sun</span></div>
+        <div class="example-row"><span class="ex-label">Battery capacity needed</span><span class="ex-val">2,500 × 2 ÷ 0.8 = 6,250 Wh</span></div>
+        <div class="example-row"><span class="ex-label">System voltage</span><span class="ex-val">12V</span></div>
+        <div class="example-row"><span class="ex-label">Battery Ah needed</span><span class="ex-val">6,250 ÷ 12 = 521 Ah</span></div>
+        <div class="example-row"><span class="ex-label">Installed battery</span><span class="ex-val">960 Ah — dual banks (400 + 560 Ah)</span></div>
+        <div class="example-row"><span class="ex-label">Peak sun hours (Robbins)</span><span class="ex-val">~4.7 hrs/day average</span></div>
+        <div class="example-row"><span class="ex-label">Solar array needed</span><span class="ex-val">2,500 ÷ 4.7 × 1.25 = ~664W</span></div>
+        <div class="example-row"><span class="ex-label">Installed solar</span><span class="ex-val">3,000W — 2 ground arrays (SE + SW)</span></div>
+        <div class="example-row"><span class="ex-label">Charge controllers</span><span class="ex-val">5× Victron SmartSolar (2× 100/50, 3× 100/20)</span></div>
+        <div class="example-row"><span class="ex-label">Inverter/charger</span><span class="ex-val">Victron Multiplus 2</span></div>
+        <p class="example-note">The Sandhills Studio's dual SE/SW ground arrays provide coverage across a wider solar window than a single south-facing array — the SE array catches morning production, the SW array extends into afternoon. Splitting the arrays across multiple SCCs also provides redundancy: no single controller failure takes the whole system down.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SOLAR SIZING CALCULATOR -->
+<section class="section" style="background:var(--white);">
+  <div class="section-inner">
+    <span class="section-label">Moore County Solar Sizing Calculator</span>
+    <h2>Estimate your system right here</h2>
+    <p class="body">Built for Moore County conditions using 4.7 peak sun hours per day — the local average from NREL solar radiation data. Enter your numbers and get a baseline system size. Use it as a starting point, not a final design.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem;align-items:start;">
+
+      <!-- Inputs -->
+      <div style="background:var(--green-deep);border-radius:8px;padding:2rem;">
+        <h3 style="font-family:var(--serif);color:#F4ECD7;font-size:1.15rem;margin-bottom:1.5rem;">Your system inputs</h3>
+
+        <!-- Daily load -->
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#8AAA92;display:block;margin-bottom:.5rem;">Daily energy load (Wh/day)</label>
+          <div style="display:flex;align-items:center;gap:.875rem;">
+            <input type="range" id="calc-load" min="500" max="20000" step="100" value="3000"
+              style="flex:1;accent-color:#B8892A;">
+            <div style="display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid #2A5A3A;border-radius:4px;overflow:hidden;">
+              <input type="number" id="calc-load-num" min="500" max="20000" step="100" value="3000"
+                style="width:72px;background:transparent;border:none;color:#B8892A;font-family:var(--mono);font-size:.88rem;padding:.4rem .5rem;text-align:right;outline:none;">
+              <span style="font-family:var(--mono);font-size:.65rem;color:#4A6A54;padding-right:.5rem;">Wh</span>
+            </div>
+          </div>
+          <p style="font-size:.75rem;color:#4A6A54;margin-top:.35rem;">Typical home: 5,000–15,000 Wh &nbsp;|&nbsp; Workshop/office: 1,500–4,000 Wh</p>
+        </div>
+
+        <!-- Autonomy -->
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#8AAA92;display:block;margin-bottom:.5rem;">Days of battery autonomy (no sun)</label>
+          <div style="display:flex;align-items:center;gap:.875rem;">
+            <input type="range" id="calc-days" min="1" max="5" step="0.5" value="2"
+              style="flex:1;accent-color:#B8892A;">
+            <div style="display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid #2A5A3A;border-radius:4px;overflow:hidden;">
+              <input type="number" id="calc-days-num" min="1" max="5" step="0.5" value="2"
+                style="width:52px;background:transparent;border:none;color:#B8892A;font-family:var(--mono);font-size:.88rem;padding:.4rem .5rem;text-align:right;outline:none;">
+              <span style="font-family:var(--mono);font-size:.65rem;color:#4A6A54;padding-right:.5rem;">days</span>
+            </div>
+          </div>
+          <p style="font-size:.75rem;color:#4A6A54;margin-top:.35rem;">Recommended: 1.5–3 days &nbsp;|&nbsp; Off-grid: 3–5 days</p>
+        </div>
+
+        <!-- System voltage -->
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#8AAA92;display:block;margin-bottom:.5rem;">System voltage</label>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <button onclick="setVoltage(12)" id="v12" style="flex:1;background:rgba(184,137,42,.25);border:1.5px solid #B8892A;color:#B8892A;font-family:var(--mono);font-size:.78rem;padding:.5rem 1rem;border-radius:4px;cursor:pointer;">12V</button>
+            <button onclick="setVoltage(24)" id="v24" style="flex:1;background:rgba(0,0,0,.2);border:1px solid #2A5A3A;color:#4A6A54;font-family:var(--mono);font-size:.78rem;padding:.5rem 1rem;border-radius:4px;cursor:pointer;">24V</button>
+            <button onclick="setVoltage(48)" id="v48" style="flex:1;background:rgba(0,0,0,.2);border:1px solid #2A5A3A;color:#4A6A54;font-family:var(--mono);font-size:.78rem;padding:.5rem 1rem;border-radius:4px;cursor:pointer;">48V</button>
+          </div>
+          <p style="font-size:.75rem;color:#4A6A54;margin-top:.35rem;">12V: small systems. 24V: medium. 48V: large homes &amp; commercial.</p>
+        </div>
+
+        <!-- Solar panel wattage -->
+        <div style="margin-bottom:1.5rem;">
+          <label style="font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:#8AAA92;display:block;margin-bottom:.5rem;">Individual panel wattage</label>
+          <div style="display:flex;align-items:center;gap:.875rem;">
+            <input type="range" id="calc-panel" min="100" max="600" step="10" value="400"
+              style="flex:1;accent-color:#B8892A;">
+            <div style="display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid #2A5A3A;border-radius:4px;overflow:hidden;">
+              <input type="number" id="calc-panel-num" min="100" max="600" step="10" value="400"
+                style="width:60px;background:transparent;border:none;color:#B8892A;font-family:var(--mono);font-size:.88rem;padding:.4rem .5rem;text-align:right;outline:none;">
+              <span style="font-family:var(--mono);font-size:.65rem;color:#4A6A54;padding-right:.5rem;">W</span>
+            </div>
+          </div>
+          <p style="font-size:.75rem;color:#4A6A54;margin-top:.35rem;">Common sizes: 200W, 300W, 400W, 500W</p>
+        </div>
+
+        <div style="font-family:var(--mono);font-size:.62rem;color:#2A5A3A;padding-top:1rem;border-top:1px solid #1A3020;line-height:1.7;">
+          LOCATION FIXED: Robbins, NC &nbsp;·&nbsp; 4.7 peak sun hrs/day (NREL NSRDB average) &nbsp;·&nbsp; LFP battery assumed (80% DoD, 95% efficiency)
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div>
+        <div style="background:var(--cream);border:1px solid var(--wheat);border-radius:8px;padding:2rem;margin-bottom:1.25rem;">
+          <h3 style="font-family:var(--serif);color:var(--green-deep);font-size:1.1rem;margin-bottom:1.25rem;">Your estimated system</h3>
+
+          <div style="display:flex;flex-direction:column;gap:0;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--wheat);">
+              <span style="font-size:.85rem;color:var(--stone);">Battery capacity needed</span>
+              <div style="text-align:right;">
+                <span id="res-wh" style="display:block;font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--green-deep);">7,500 Wh</span>
+                <span id="res-ah" style="font-family:var(--mono);font-size:.75rem;color:var(--stone);">625 Ah @ 12V</span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--wheat);">
+              <span style="font-size:.85rem;color:var(--stone);">Solar array needed</span>
+              <div style="text-align:right;">
+                <span id="res-solar" style="display:block;font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--green-deep);">797 W</span>
+                <span id="res-panels" style="font-family:var(--mono);font-size:.75rem;color:var(--stone);">2 × 400W panels</span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:.75rem 0;border-bottom:1px solid var(--wheat);">
+              <span style="font-size:.85rem;color:var(--stone);">Min. charge controller</span>
+              <span id="res-scc" style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--green-deep);">67A @ 12V</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:.75rem 0;">
+              <span style="font-size:.85rem;color:var(--stone);">Est. daily production</span>
+              <span id="res-prod" style="font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--green-deep);">3,748 Wh/day</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assumptions note -->
+        <div style="background:var(--white);border:1px solid var(--wheat);border-radius:6px;padding:1.25rem;margin-bottom:1.25rem;">
+          <p style="font-family:var(--mono);font-size:.62rem;color:var(--stone);letter-spacing:.05em;line-height:1.8;">
+            ASSUMPTIONS: LFP battery at 80% depth of discharge · 25% system loss factor (wiring, controller, inverter) · 4.7 peak sun hours/day (Robbins, NC NREL average) · No temperature derating. Results are estimates for planning purposes. Consult a certified solar installer for final design.
+          </p>
+        </div>
+
+        <!-- PVWatts link -->
+        <div style="background:var(--green-deep);border-radius:6px;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <div>
+            <span style="font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:#4A6A54;text-transform:uppercase;display:block;margin-bottom:.25rem;">For grid-tied production estimates</span>
+            <span style="font-family:var(--serif);font-size:.95rem;color:#F4ECD7;">NREL PVWatts Calculator</span>
+            <span style="font-size:.78rem;color:#8AAA92;display:block;margin-top:.2rem;">Pre-loaded for Robbins, NC coordinates</span>
+          </div>
+          <a href="https://pvwatts.nrel.gov/pvwatts.php?newdata=1&lat=35.4334&lon=-79.6050&timeframe=monthly&dataset=nsrdb&system_capacity=4&module_type=0&losses=14&array_type=1&tilt=35&azimuth=180"
+            target="_blank" rel="noopener"
+            style="background:var(--gold);color:var(--green-deep);padding:.55rem 1.25rem;border-radius:4px;font-family:var(--sans);font-size:.82rem;font-weight:600;text-decoration:none;white-space:nowrap;flex-shrink:0;">
+            Open PVWatts →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  var voltage = 12;
+
+  function calc() {
+    var load = parseFloat(document.getElementById('calc-load').value) || 3000;
+    var days = parseFloat(document.getElementById('calc-days').value) || 2;
+    var panelW = parseFloat(document.getElementById('calc-panel').value) || 400;
+    var sunHrs = 4.7;
+    var dod = 0.80;
+    var sysloss = 0.25;
+
+    var whNeeded = load * days / dod;
+    var ahNeeded = whNeeded / voltage;
+    var solarW = Math.ceil((load / sunHrs) * (1 + sysloss));
+    var panels = Math.ceil(solarW / panelW);
+    var sccA = Math.ceil(solarW / voltage * 1.25);
+    var dailyProd = Math.round(panelW * panels * sunHrs * (1 - sysloss));
+
+    document.getElementById('res-wh').textContent   = Math.round(whNeeded).toLocaleString() + ' Wh';
+    document.getElementById('res-ah').textContent   = Math.round(ahNeeded).toLocaleString() + ' Ah @ ' + voltage + 'V';
+    document.getElementById('res-solar').textContent = solarW.toLocaleString() + ' W';
+    document.getElementById('res-panels').textContent = panels + ' \u00D7 ' + panelW + 'W panel' + (panels > 1 ? 's' : '');
+    document.getElementById('res-scc').textContent   = sccA + 'A @ ' + voltage + 'V';
+    document.getElementById('res-prod').textContent  = dailyProd.toLocaleString() + ' Wh/day';
+  }
+
+  function sync(sliderId, numberId) {
+    var s = document.getElementById(sliderId);
+    var n = document.getElementById(numberId);
+    s.addEventListener('input', function() { n.value = s.value; calc(); });
+    n.addEventListener('input', function() { s.value = n.value; calc(); });
+  }
+
+  window.setVoltage = function(v) {
+    voltage = v;
+    ['v12','v24','v48'].forEach(function(id) {
+      var btn = document.getElementById(id);
+      var active = id === 'v' + v;
+      btn.style.background = active ? 'rgba(184,137,42,.25)' : 'rgba(0,0,0,.2)';
+      btn.style.borderColor = active ? '#B8892A' : '#2A5A3A';
+      btn.style.color = active ? '#B8892A' : '#4A6A54';
+      btn.style.borderWidth = active ? '1.5px' : '1px';
+    });
+    calc();
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    sync('calc-load', 'calc-load-num');
+    sync('calc-days', 'calc-days-num');
+    sync('calc-panel', 'calc-panel-num');
+    calc();
+  });
+})();
+</script>
+
+<!-- EXTERNAL RESOURCES -->
+<section class="section resources-section">
+  <div class="section-inner">
+    <span class="section-label">External resources</span>
+    <h2>Useful starting points for Moore County residents</h2>
+    <p class="body">These organizations and tools provide reliable information on solar incentives, system design, and energy planning for North Carolina households and small organizations.</p>
+
+    <div class="resources-grid">
+
+      <div class="resource-card">
+        <span class="resource-tag">NC Incentives</span>
+        <span class="resource-name">NC Clean Energy Technology Center</span>
+        <p class="resource-desc">NC State University center tracking state and federal solar incentives, net metering policy, and clean energy programs available to NC residents.</p>
+        <a href="https://nccleantech.ncsu.edu" class="resource-link" target="_blank" rel="noopener">nccleantech.ncsu.edu →</a>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-tag">Federal &amp; State Incentives</span>
+        <span class="resource-name">DSIRE — Database of State Incentives for Renewables &amp; Efficiency</span>
+        <p class="resource-desc">The authoritative database for solar and renewable energy incentives at the federal, state, and utility level. Find every program available in Moore County.</p>
+        <a href="https://www.dsireusa.org" class="resource-link" target="_blank" rel="noopener">dsireusa.org →</a>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-tag">Federal Tax Credit</span>
+        <span class="resource-name">IRS Form 5695 — Residential Energy Credits</span>
+        <p class="resource-desc">The 30% federal solar investment tax credit (ITC) applies to residential solar and battery storage systems. IRS Form 5695 is how you claim it. Consult your tax advisor.</p>
+        <a href="https://www.irs.gov/forms-pubs/about-form-5695" class="resource-link" target="_blank" rel="noopener">IRS Form 5695 →</a>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-tag">System Design</span>
+        <span class="resource-name">Victron Energy VRM Portal</span>
+        <p class="resource-desc">Free remote monitoring platform for Victron-based systems. If you build with Victron components and a Cerbo GX, your system data is accessible from any browser — permanently and for free.</p>
+        <a href="https://vrm.victronenergy.com" class="resource-link" target="_blank" rel="noopener">vrm.victronenergy.com →</a>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-tag">Solar Sizing</span>
+        <span class="resource-name">PVWatts Calculator — NREL</span>
+        <p class="resource-desc">National Renewable Energy Laboratory tool for estimating solar production at any location. Enter your address and array specs to get monthly production estimates for Moore County conditions.</p>
+        <a href="https://pvwatts.nrel.gov" class="resource-link" target="_blank" rel="noopener">pvwatts.nrel.gov →</a>
+      </div>
+
+      <div class="resource-card">
+        <span class="resource-tag">NC Utility Policy</span>
+        <span class="resource-name">NC Utilities Commission</span>
+        <p class="resource-desc">The regulatory body overseeing Duke Energy Carolinas in Moore County. Net metering rules, interconnection standards, and rate cases are all public record here.</p>
+        <a href="https://www.ncuc.net" class="resource-link" target="_blank" rel="noopener">ncuc.net →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Have questions about your own system?</h2>
+  <p>We're not selling anything. If you're a Moore County resident or organization thinking about solar, battery storage, or off-grid resilience and want a straight conversation about it — reach out.</p>
+  <div class="cta-actions">
+    <a href="/cdn-cgi/l/email-protection#264f484049664b4949544343484354415f4748424b4756564f484108495441" class="btn-primary">Send a Message</a>
+    <a href="about.html" class="btn-outline">About Us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg viewBox="0 0 80 80" width="32" height="32" style="margin-bottom:8px;" aria-hidden="true">
+        <line x1="58" y1="10" x2="58" y2="4" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="65.5" y1="13" x2="70.2" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="68" y1="20" x2="75" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="50.5" y1="13" x2="45.8" y2="8.3" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="48" y1="20" x2="41" y2="20" stroke="#B8892A" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="58" cy="20" r="5.5" fill="#B8892A"/>
+        <path d="M 0 70 C 8 60 18 42 28 44 C 38 46 38 58 43 56 C 48 54 56 36 62 37 C 68 38 74 50 80 50 L 80 80 L 0 80 Z" fill="#6B5F4A"/>
+      </svg>
+      <span style="font-family:var(--serif);font-size:1rem;font-weight:700;color:#6B5F4A;display:block;margin-bottom:.5rem;">Moore Energy &amp; Mapping</span>
+      <p>A Moore County nonprofit providing precision mapping products, regional spatial data, and energy resilience resources for the NC Sandhills.</p>
+      <p style="margin-top:.5rem;">210 W Salisbury St · Robbins, NC 27325</p>
+    </div>
+    <div class="footer-col">
+      <h4>Programs</h4>
+      <ul>
+        <li><a href="projects/">Mapping Projects</a></li>
+        <li><a href="energy.html">Energy Resources</a></li>
+        <li><a href="open-data.html">Open Data</a></li>
+        <li><a href="projects/bear-creek-trail-map.html">Bear Creek Trails</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Organization</h4>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="get-involved.html">Get Involved</a></li>
+        <li><a href="/cdn-cgi/l/email-protection#50393e363f103d3f3f2235353e35223729313e343d312020393e377e3f2237">Contact</a></li>
+        <li><a href="open-data.html#privacy">Data Ethics &amp; Privacy</a></li>
+        <li><a href="docs/bylaws.pdf">Bylaws (PDF)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Moore County Mapping and Energy Alliance · d/b/a Moore Energy &amp; Mapping · SOSID 2930299</p>
+    <a href="https://mooreenergymaps.org">mooreenergymaps.org</a>
+  </div>
+</footer>
+
+</body>
+</html>
